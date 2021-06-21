@@ -82,6 +82,9 @@
                 <th>
                   Current Price
                 </th>
+                <th>
+                  Transaction Type
+                </th>
               </thead>
               <tbody>
                 <tr *ngFor="let history of userHistory">
@@ -89,6 +92,7 @@
                   <td>{{history.stockName}}</td>
                   <td>{{history.quantity}}</td>
                   <td>{{history.currentPrice}}</td>
+                  <td>{{history.transactionType}}</td>
                 </tr>
               </tbody>
             </table>

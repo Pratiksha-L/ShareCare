@@ -1,4 +1,9 @@
+
 <div class="panel-header panel-header-lg">
+  <ng-container appendTo="body" pTooltip={{topGainerDefinition}} tooltipPosition="bottom">
+    <h1 class="topleft">{{pageTitle}}Tata Steel</h1>
+  </ng-container>
+  <!-- {{topGainer.companyName}} -->
     <canvas baseChart id="bigDashboardChart"
                 [datasets]="lineBigDashboardChartData"
                 [labels]="lineBigDashboardChartLabels"
@@ -7,289 +12,160 @@
                 [chartType]="lineBigDashboardChartType"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
+               
 </div>
 
 <div class="main-content">
   <div class="row">
-    <div class="col-lg-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Global Sales</h5>
-          <h4 class="card-title">Shipped Products</h4>
-          <div ngbDropdown>
-            <button type="button" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret" ngbDropdownToggle>
-              <i class="now-ui-icons loader_gear"></i>
-            </button>
-            <div ngbDropdownMenu class="dropdown-menu-right">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <a class="dropdown-item text-danger" href="#">Remove Data</a>
-            </div>
-          </div>
+    <div class="col-lg-6">
+      <div class="card" [style]="{'width': '40rem'}">
+        <div class="card-header" >
+          <h5 class="card-category1">{{cardSubTitle}}</h5>  
+          <h4 class="card-title" pTooltip={{priceShockerDefinition}} style="width: 194px;">
+             {{card1Title}}
+          </h4>    
         </div>
         <div class="card-body">
-          <div class="chart-area">
-            <canvas baseChart id="lineChartExample"
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [colors]="lineChartColors"
-                        [options]="lineChartOptions"
-                        [chartType]="lineChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">2018 Sales</h5>
-          <h4 class="card-title">All products</h4>
-          <div ngbDropdown>
-            <button type="button" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret" ngbDropdownToggle>
-              <i class="now-ui-icons loader_gear"></i>
-            </button>
-            <div ngbDropdownMenu class="dropdown-menu-right">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <a class="dropdown-item text-danger" href="#">Remove Data</a>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="chart-area">
-            <!-- <canvas id="lineChartExampleWithNumbersAndGrid"></canvas> -->
-            <canvas baseChart id="lineChartExampleWithNumbersAndGrid"
-                        [datasets]="lineChartWithNumbersAndGridData"
-                        [labels]="lineChartWithNumbersAndGridLabels"
-                        [colors]="lineChartWithNumbersAndGridColors"
-                        [options]="lineChartWithNumbersAndGridOptions"
-                        [chartType]="lineChartWithNumbersAndGridType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Email Statistics</h5>
-          <h4 class="card-title">24 Hours Performance</h4>
-        </div>
-        <div class="card-body">
-          <div class="chart-area">
-            <canvas baseChart id="barChartSimpleGradientsNumbers"
-                        [datasets]="lineChartGradientsNumbersData"
-                        [labels]="lineChartGradientsNumbersLabels"
-                        [colors]="lineChartGradientsNumbersColors"
-                        [options]="lineChartGradientsNumbersOptions"
-                        [chartType]="lineChartGradientsNumbersType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card  card-tasks">
-        <div class="card-header ">
-          <h5 class="card-category">Backend development</h5>
-          <h4 class="card-title">Tasks</h4>
-        </div>
-        <div class="card-body ">
-          <div class="table-full-width table-responsive">
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" checked>
-                        <span class="form-check-sign"></span>
-                      </label>
-                    </div>
-                  </td>
-                  <td class="text-left">Sign contract for "What are conference organizers afraid of?"</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox">
-                        <span class="form-check-sign"></span>
-                      </label>
-                    </div>
-                  </td>
-                  <td class="text-left">Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" checked>
-                        <span class="form-check-sign"></span>
-                      </label>
-                    </div>
-                  </td>
-                  <td class="text-left">Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                  </td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer ">
-          <hr>
-          <div class="stats">
-            <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-category">All Persons List</h5>
-          <h4 class="card-title"> Employees Stats</h4>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
+          <div class="table-responsive" style="overflow: hidden;">
+            <table class="table" > 
               <thead class=" text-primary">
-                <th>
-                  Name
-                </th>
-                <th>
-                  Country
-                </th>
-                <th>
-                  City
-                </th>
-                <th class="text-right">
-                  Salary
+                <th [style]="{'width': '30rem'}" style="text-align: center;" *ngFor="let col of columnData">
+                  {{col.label}}
                 </th>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    Dakota Rice
+              <tbody >
+                 <tr *ngFor="let element of priceShockers"> 
+                  
+                  <td style="font-weight: 550; color: black; text-align: left;">
+                    {{element.companyName}}
                   </td>
-                  <td>
-                    Niger
+
+                  <td style="color: black; text-align: center;">
+                    {{element.sector}}
                   </td>
-                  <td>
-                    Oud-Turnhout
+
+                  <td style="color: black; text-align: center;">
+                    {{element.currentPrice | number}}
                   </td>
-                  <td class="text-right">
-                    $36,738
-                  </td>
+
+                  <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                    {{element.percentageChange}}
+                  </td> 
+                  <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                      {{element.percentageChange}}
+                  </td> 
+                
                 </tr>
-                <tr>
-                  <td>
-                    Minerva Hooper
-                  </td>
-                  <td>
-                    Curaçao
-                  </td>
-                  <td>
-                    Sinaai-Waas
-                  </td>
-                  <td class="text-right">
-                    $23,789
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Sage Rodriguez
-                  </td>
-                  <td>
-                    Netherlands
-                  </td>
-                  <td>
-                    Baileux
-                  </td>
-                  <td class="text-right">
-                    $56,142
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Doris Greene
-                  </td>
-                  <td>
-                    Malawi
-                  </td>
-                  <td>
-                    Feldkirchen in Kärnten
-                  </td>
-                  <td class="text-right">
-                    $63,542
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Mason Porter
-                  </td>
-                  <td>
-                    Chile
-                  </td>
-                  <td>
-                    Gloucester
-                  </td>
-                  <td class="text-right">
-                    $78,615
-                  </td>
-                </tr>
+            
               </tbody>
             </table>
           </div>
         </div>
+     </div> 
+    </div> 
+
+    <div class="col-lg-4 col-md-6">
+      <div class="card card-chart" [style]="{'width': '33rem' ,'height': '25.3rem'}">
+          
+          <div class="card-header">
+            <h5 class="card-category2">{{cardSubTitle}}</h5>
+            <h5 class="card-title" pTooltip={{volumeShockerDefinition}} style="width: 220px;" >
+              {{card2Title}}
+            </h5>
+          </div>
+
+          <div class="card-body">
+            <div class="chart-area" [style]="{'height': '16rem'}">
+                <canvas baseChart id="barChartSimpleGradientsNumbers"
+                            [datasets]="lineChartGradientsNumbersData"
+                            [labels]="lineChartGradientsNumbersLabels"
+                            [colors]="lineChartGradientsNumbersColors"
+                            [options]="lineChartGradientsNumbersOptions"
+                            [chartType]="lineChartGradientsNumbersType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>  
+
+          <div class="card-footer">
+              <div class="stats"> 
+                  <i class="now-ui-icons arrows-1_refresh-69"></i>  Just Updated
+               </div> 
+          </div>
+
       </div>
+   
     </div>
-  </div>
+  
 </div>
+
+<!-- TESTING -->
+<br>
+<div>
+  <h4>Volume Shocker testing </h4>
+  <table class="table" [style]="{'width': '40rem'}">
+    <thead class=" text-primary">
+      <th>
+        Company Name
+      </th>
+      <th>
+        Sector
+      </th>
+      <th>
+        Volume 
+      </th>
+    </thead>
+    <tbody >
+       <tr *ngFor="let element of volumeShockers"> 
+        
+        <td style="font-weight: 550; color: black;">
+          {{element.companyName}}
+        </td>
+
+        <td style="color: black;">
+          {{element.sector}}
+        </td>
+
+        <td style="color: black; text-align: center;">
+          {{element.volume | number}}
+        </td>
+      </tr>
+  
+    </tbody>
+  </table>
+</div>
+
+<!-- TESTING -->
+<!-- <br><br><br><br><br><br><br>
+<div>
+  <h4>Top Gainer Testing </h4>
+  <h3>{{topGainer.companyName}} - {{topGainer.sector}}</h3>
+  <table class="table" [style]="{'width': '40rem'}">
+    <thead class=" text-primary">
+      <th>
+        Dates
+      </th>
+      <th>
+       Closing Price
+      </th>
+    </thead>
+    <tbody >
+       <tr *ngFor="let element of topGainer.dates"> 
+
+        <td style="color: black; text-align: center;">
+          {{element | number}}
+        </td>
+
+      </tr>
+
+      <tr *ngFor="let element of topGainer.closingPrice"> 
+
+        <td style="color: black; text-align: center;">
+          {{element | number}}
+        </td>
+
+      </tr>
+  
+    </tbody>
+  </table>
+</div> -->

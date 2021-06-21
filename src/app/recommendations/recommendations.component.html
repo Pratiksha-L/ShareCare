@@ -1,2 +1,182 @@
-<p-dropdown [options]="parameters" [(ngModel)]="selectedParameter" optionLabel="label" optionValue="value"></p-dropdown> 
+
+<div class="panel-header panel-header-sm increase-height" >
+
+    <h1 class="topleft" >{{pageTitle}}</h1>
+
+    <h5 class = "sector">{{dropdown1Title}}</h5>
+    <p-dropdown  [options]="sectorList" appendTo="body" [(ngModel)]="selectedSector" placeholder="Select a Sector" class="dropdown1"  ></p-dropdown>  
+
+    <h5 class = "parameter">{{dropdown2Title}}</h5>
+    <p-dropdown  [options]="parameters" appendTo="body" [(ngModel)]="selectedParameter" placeholder="Select a Parameter"  class="dropdown2" ></p-dropdown>
+
+    <p-button  type="button" class="recomendationButton"  label= "Get Recommendation" (onClick)="recommendationClick($event)" ></p-button>
+    
+</div>
+
+
+<p-toast position="top-right"></p-toast>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <p-tabView (onChange)="handleChange($event)">
+                    <p-tabPanel header="BUY" [selected]="true" [style]="{'color':'rgb(0, 0, 0)'}" >
+                    
+                       <div class="card-body">
+                        <div class="table-responsive" style="overflow: hidden;">
+
+                            <table *ngIf = "showBUYTable" class="table">
+                           
+                            <thead class=" text-primary">
+                                <th [style]="{'width': '25rem'}" *ngFor="let col of columnData" pTooltip={{col.description}} tooltipPosition="top" style="text-align: center;">
+                                    {{col.label}}
+                                </th>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let element of stocksToBuy"> 
+                                    <td style="font-weight: 550; color: black;text-align: left;">
+                                        {{element.companyName}}
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        {{element.currentPrice | number}}
+                                    </td>
+
+                                    <!-- *ngIf="selectedParameter == parameter[0].label"  -->
+                                    <td style="text-align: center;">
+                                        {{element.growth}}
+                                    </td>
+
+                                    <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange}}
+                                    </td> 
+                                    <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange}}
+                                    </td> 
+
+                                    <td style="text-align: center;">
+                                        {{element.marketCap | number}}
+                                    </td> 
+
+                                    <td>
+                                        <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="showDialogueBox()" style="width: 30px;height: 30px;"></button>
+                                    
+                                        <p-dialog header="Add to User History : {{selectedCompanyName}}" [(visible)]="displayDialogueBox" [style]="{width: '50vw'}" [baseZIndex]="10000">
+
+                                        <p>Enter volume of stocks to save<br><br>
+                                            <p-inputNumber [(ngModel)]="savedQuantity" inputId="minmax" inputId="minmax" mode="decimal" [min]="1" [max]="100000000000000000" >
+                                            </p-inputNumber>
+                                        </p>
+                                        
+                                        <ng-template pTemplate="footer">
+                                            
+                                            <button type="button" pButton pRipple (click)="showSuccessMessage(element)" label="Save" icon="pi pi-check" class="p-button-info p-mb-2" ></button>
+                                           
+                                        </ng-template>
+                                        </p-dialog>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </p-tabPanel>
+                    
+                    <p-tabPanel header="SELL" >
+                        <div class="card-body">
+                            <div class="table-responsive" style="overflow: hidden;">
+
+                                <table class="table" *ngIf = "showSELLTable">
+
+                                <thead class=" text-primary">
+                                    <th [style]="{'width': '25rem'}" *ngFor="let col of columnData" pTooltip={{col.description}} tooltipPosition="top" style="text-align: center;">
+                                        {{col.label}}
+                                    </th>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr *ngFor="let element of stocksToSell"> 
+                                        <td style="font-weight: 550; color: black;text-align: left;">
+                                            {{element.companyName}}
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            {{element.currentPrice | number}}
+                                        </td>
+
+                                        <!-- *ngIf="selectedParameter == parameter[0].label" -->
+                                        <td  style="text-align: center;">
+                                            {{element.growth}}
+                                        </td>
+
+                                        <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange}}
+                                        </td> 
+                                        <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange}}
+                                        </td> 
+                                        <td style="text-align: center;">
+                                            {{element.marketCap | number}}
+                                        </td> 
+
+                                        <td>
+                                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="showDialogueBox()" style="width: 30px;height: 30px;"></button>
+
+                                        <p-dialog header="Add to User History : {{selectedCompanyName}}" [(visible)]="displayDialogueBox" [style]="{width: '50vw'}" [baseZIndex]="10000">
+                                            <p>Enter volume of stocks to save<br><br>
+                                                <p-inputNumber [(ngModel)]="value" inputId="minmax" inputId="minmax" mode="decimal" [min]="1" [max]="100000000000000000">
+                                                </p-inputNumber>
+                                            </p>
+                                            <ng-template pTemplate="footer">
+                                                <button type="button" pButton pRipple (click)="showSuccessMessage(element)" label="Save" icon="pi pi-check" class="p-button-info p-mb-2"></button>
+                                            </ng-template>
+                                            </p-dialog>
+                                         </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+
+                
+        <div class="col-md-4">
+             <div class="card card-user" [style]="{'width': '24rem', 'height': '31rem'}">
+                <div class="card-header">
+                    <h5 class="card-category">Statistics</h5>
+                    <h5 class="card-title">Performance</h5>
+                </div>
+                <div class="card-body">
+                <div class="chart-area" [style]="{'height': '21rem'}">
+                    <canvas baseChart id="barChartSimpleGradientsNumbers"
+                                [datasets]="lineChartGradientsNumbersData"
+                                [labels]="lineChartGradientsNumbersLabels"
+                                [colors]="lineChartGradientsNumbersColors"
+                                [options]="lineChartGradientsNumbersOptions"
+                                [chartType]="lineChartGradientsNumbersType"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                </div>
+                </div>  
+
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+
+<!-- <p-progressSpinner [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner> -->
+
 

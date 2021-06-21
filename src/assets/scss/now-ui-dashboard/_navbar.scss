@@ -136,11 +136,11 @@
             font-size: $font-size-mini;
             padding: $padding-base-vertical $padding-base-horizontal;
             line-height: $line-height-nav-link;
-            margin-right: 3px;
+            // margin-right: 1px;
 
             i.fa + p,
             i.now-ui-icons + p{
-                margin-left: 3px;
+                 left: 0.02cm;
             }
 
             i.fa,
@@ -149,11 +149,12 @@
                 position: relative;
                 top: 3px;
                 text-align: center;
-                width: 21px;
+                width: 40px;
             }
 
             i.now-ui-icons{
                 top: 4px;
+                left : 0% ;
                 font-size: 16px;
             }
 

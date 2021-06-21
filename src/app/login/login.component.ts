@@ -3,68 +3,92 @@ import { Router } from '@angular/router';
 import {MessageService} from 'primeng/api'
 import { EncryptPasswordService } from '../services/encrypt-password.service';
 import { LoginService } from '../services/login.service';
-// ../../services/login.service
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
 
-  userName: string = "";
-  password: string = "";
-  hasError: boolean = false;
+export class LoginComponent implements OnInit 
+{
+  userName: string ;                      //Credentials: Username               
+  password: string ;                      //Credentials: Password
+  firstName : string ;                    //User's First Name
+  lastName : string ;                     //User's Last Name
+  hasError: boolean = false;              //Check if Username & Password are provided or not
 
-  constructor(
-    // private loginService: LoginService, 
+  constructor
+  (
+    private loginService: LoginService, 
     private messageService: MessageService,
     private router: Router, 
     private encrypt : EncryptPasswordService,
-   private loginService:LoginService
+   
    ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
     localStorage.setItem('SessionUser',this.userName) 
 
     var encrypted = this.encrypt.set('123456$#@$^@1ERF', this.password);
     var decrypted = this.encrypt.get('123456$#@$^@1ERF', encrypted);
    
-    console.log('Encrypted :' + encrypted);
-    console.log('Decrypted :' + decrypted);
+    console.log('Encrypted Password:' + encrypted);
+    console.log('Decrypted Password :' + decrypted);
   }
 
-
-  login() {
-    if (this.userName.length == 0 || this.password.length == 0) {
+  //Function: Login
+  login() 
+  {
+    //Checking if Username & Password are provided or not
+    if (this.userName.length == 0 || this.password.length == 0) 
+    {
       this.hasError = true;
       return;
-    } else {
+    } 
+
+    else 
+    {
       this.hasError = false;
       sessionStorage.setItem("isLoggedIn","true");
+      sessionStorage.setItem("userName", this.userName) ;
       this.router.navigate(["/dashboard"]);
     }
+
+    console.log("Login Button is Clicked !" ) ;
+
   }
-  //let temp: User = {username : this.username, password : btoa(this.password.split('').reverse().join('')) } ;
-    // this.loginService.checkLogin(temp).subscribe((result : User) =>
-    //   {
-    //     this.loginService.isValidUser = result ;
 
-    //     if(result == null )
-    //     {
-    //       this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Password '}) ;
+  //Error Handling
+  checkLogin()
+  {
+    let temp: User = {userName : this.userName, firstName : this.firstName,lastName: this.lastName, password : btoa(this.password.split('').reverse().join('')) } ;
 
-    //     }
-    //     else
-    //     {
-          
-    //     sessionStorage.setItem("isLoggedIn", "true") ;
-    // this.loginService.loggedInUser = result;
-    //       this.myRoute.navigate(['/dashboard'])
-    //     }
-    //   }, (err: any) =>{
-    //     this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
-    //   }
+     this.loginService.checkLogin(temp).subscribe((result : boolean) =>
+     {
+        this.loginService.isValidUser = result ;
+
+        if(result == null )
+        {
+          this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Password '}) ;
+
+        }
+        else
+        {
+          sessionStorage.setItem("isLoggedIn", "true") ;
+          //this.loginService.loggedInUser = result;
+          this.router.navigate(['/dashboard']) ;
+        }
+      }, (err: any) =>
+      {
+        this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
+      }
     
-    // ) ;
+    ) ;
+     
+  }
+      
 }
+

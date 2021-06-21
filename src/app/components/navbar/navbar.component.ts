@@ -4,15 +4,17 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 import { Router } from '@angular/router';
 import Chart from 'chart.js';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+    public userName : string ;
     private listTitles: any[];
     location: Location;
-      mobile_menu_visible: any = 0;
+    mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
 
@@ -24,6 +26,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit(){
+      this.userName = sessionStorage.getItem("userName") ;
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -155,6 +158,12 @@ export class NavbarComponent implements OnInit {
               return this.listTitles[item].title;
           }
       }
-      return 'Dashboard';
+      // return 'Market Trend';
     }
+
+    // getUsername()
+    // {
+    //   this.userName = sessionStorage.getItem("userName") ;
+    //   return this.userName ;
+    // }
 }

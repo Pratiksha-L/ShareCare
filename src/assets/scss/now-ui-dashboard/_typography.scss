@@ -20,7 +20,7 @@ h1, .h1 {
     font-size: $font-size-h1;
     line-height: 1.15;
     margin-bottom: $margin-base-vertical * 2;
-
+   
     small{
         font-weight: $font-weight-bold;
         text-transform: uppercase;
@@ -55,7 +55,7 @@ h5, .h5 {
 h6, .h6{
     font-size: $font-size-h6;
     font-weight: $font-weight-bold;
-    text-transform: uppercase;
+    text-transform: uppercase, lowercase;
 }
 p{
     &.description{

@@ -1,49 +1,63 @@
-
 <p-toast position="bottom-right"></p-toast> <!--error message-->
-<body id="page-top">
 
-    <header class="masthead">
-      <div class="container h-100">
-        <div class="row h-100">
-          <div class="col-lg-7 my-auto">
-            <div class="header-content mx-auto">
-              <h1 class="mb-5">ShareCare</h1>
-              <h6>You need profits, we know profits !</h6>
-              
-            </div>
-          </div>
-          <div class="col-lg-5 my-auto">
-            <p-card header="Login" [style]="{width: '360px'}"><br>
-                <div class="ui-g">
-                  <div class="ui-g-3">
-                  <label for="float-input">Username</label>
-                  </div>
-                    <div class="ui-g-3">
-                      <input id="float-input" type="text" size="30" pInputText [(ngModel)]="userName"> 
-                    </div>
-                </div>
-                <div class="ui-g">
-                  <div class="ui-g-3">
-                  <label for="float-password">Password</label>
-                  </div>
-                    <div class="ui-g-3">
-                  <input id="float-password"  pPassword type="password" [(ngModel)]="password" />
-                </div>
-                </div>
-                <div class="ui-g" *ngIf="hasError">
-                    <div class="ui-g-10">
-                      <p style="color: red">*Username and Password are compulsary</p>
-                      </div>
-                </div>
-                <div class="ui-g">
-                  <div class="ui-g-3">
-                    <button (click)="login()">Login</button>
-                    <!-- <p-button type="button" label="Login" (onClick)="login()"></p-button> -->
-                  </div>
-              </div>
-            </p-card>
+<body id="page-top">
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100">
+
+        <div class="col-lg-7 my-auto">
+          <div class="header-content mx-auto">
+
+            <h1 class="mb-5">ShareCare</h1>
+            <h5 class="tagline">You need profits, We know profits !</h5>
+            
           </div>
         </div>
+
+        <div class="col-lg-5 my-auto">
+          <p-card header="Login" [style]="{width: '360px', color: '#000000' }"><br>
+
+            <div class="ui-g">
+
+              <div class="ui-g-3">
+                <label for="float-input">Username</label>
+              </div>
+
+              <div class="ui-g-3">
+                <input id="float-input" type="text" size="30" pInputText [(ngModel)]="userName"> 
+              </div>
+
+            </div>
+
+            <div class="ui-g">
+
+              <div class="ui-g-3">
+                  <label for="float-password">Password</label>
+              </div>
+
+              <div class="ui-g-3">
+                <input id="float-password"  pPassword type="password" [(ngModel)]="password" />
+              </div>
+
+            </div>
+
+            <div class="ui-g" *ngIf="hasError">
+                <div class="ui-g-10">
+                    <p style="color: red">*Username and Password are compulsary</p>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3">
+                  <br>
+                  <p-button type="button" label="Login" (onClick)="login()"></p-button>
+                </div>
+            </div>
+
+          </p-card>
+        </div>
+
       </div>
-    </header>
-    </body>
+    </div>
+  </header>
+</body>

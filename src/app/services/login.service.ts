@@ -10,7 +10,7 @@ export class LoginService {
   serviceUrl = "" ;//Backend url
 
   isValidUser : boolean = false ;
-  loggedInUser: User;
+  //loggedInUser: User;
 
   constructor(private http:HttpClient) { }
 
