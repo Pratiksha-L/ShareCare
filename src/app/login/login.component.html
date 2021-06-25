@@ -8,19 +8,19 @@
         <div class="col-lg-7 my-auto">
           <div class="header-content mx-auto">
 
-            <h1 class="mb-5">ShareCare</h1>
-            <h5 class="tagline">You need profits, We know profits !</h5>
+            <h1 class="mb-5">{{pageTitle}}</h1>
+            <h5 class="tagline">{{tagline}}</h5>
             
           </div>
         </div>
 
         <div class="col-lg-5 my-auto">
-          <p-card header="Login" [style]="{width: '360px', color: '#000000' }"><br>
+          <p-card header={{header}} [style]="{width: '360px', color: '#000000' }"><br>
 
             <div class="ui-g">
 
               <div class="ui-g-3">
-                <label for="float-input">Username</label>
+                <label for="float-input">{{label1}}</label>
               </div>
 
               <div class="ui-g-3">
@@ -32,7 +32,7 @@
             <div class="ui-g">
 
               <div class="ui-g-3">
-                  <label for="float-password">Password</label>
+                  <label for="float-password">{{label2}}</label>
               </div>
 
               <div class="ui-g-3">
@@ -43,7 +43,7 @@
 
             <div class="ui-g" *ngIf="hasError">
                 <div class="ui-g-10">
-                    <p style="color: red">*Username and Password are compulsary</p>
+                    <p style="color: red">{{errorMessage}}</p>
                 </div>
             </div>
 

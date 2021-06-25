@@ -1,7 +1,6 @@
-export class TopGainer {
-    companyName : string ;
-    sector : string ;
-    closingPrice : number[] ;
-    dates : string[] ;
-
+export class TopGainer 
+{
+    symbol : string ;
+    close : Number ;
+    date : Date ;
 }

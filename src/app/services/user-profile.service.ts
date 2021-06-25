@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StocksRecommended } from '../model/stocksRecommended';
 import { UserHistory } from '../model/userHistory';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserProfileService {
+
+export class UserProfileService 
+{
 
   constructor(private http:HttpClient) { }
 

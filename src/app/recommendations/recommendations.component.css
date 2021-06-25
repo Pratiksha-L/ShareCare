@@ -1,17 +1,20 @@
-.dropdown1{
+.dropdown1
+{
     position: absolute;
     top: 170px;
     left: 30px;
 }
 
-.dropdown2{
+.dropdown2
+{
     position: absolute;
     top: 170px;
     left: 280px;
    
 }
 
-.topleft {
+.topleft 
+{
     color:white; 
     font-weight: 400;
     text-transform: capitalize;
@@ -23,34 +26,43 @@
     letter-spacing: 1.5px;
 }
 
-.increase-height{
+.increase-height
+{
     padding-bottom: 175px; 
 }
-.recomendationButton{
+
+.recomendationButton
+{
     position: absolute;
     top: 170px;
     left: 643px;
 }
 
-.header{
+.header
+{
     font-weight: 500;
     
 }
 
-p {
+p 
+{
     margin: 0;
 }
 
-.confirmation-content {
+.confirmation-content 
+{
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-:host ::ng-deep .p-dialog .p-button {
+:host ::ng-deep .p-dialog .p-button
+{
     min-width: 6rem;
 }
-.sector{
+
+.sector
+{
     position: absolute;
     top: 146px;
     left: 30px;
@@ -60,7 +72,8 @@ p {
     letter-spacing: 1px;
     line-height: 17px;
 }
-.parameter{
+.parameter
+{
     position: absolute;
     top: 146px;
     left: 280px;
@@ -70,19 +83,22 @@ p {
     letter-spacing: 1px;
     line-height: 17px;
 }
-.button {
+.button 
+{
     min-width: 10rem;
     margin-right: .5rem;
 }
 
-.p-toast-message-custom {
+.p-toast-message-custom 
+{
     background-color: #E1CFE7;
     border: solid #8A427A;
     border-width: 0 0 0 6px;
     color: #2c1e30;
     
 }
-.p-toast-icon-close {
+.p-toast-icon-close 
+{
     color: #2c1e30;
 }
 
@@ -97,7 +113,8 @@ p {
     
 }
 
-.card-category:after {
+.card-category:after 
+{
     content: '';
     display: block;
     position: relative;
@@ -122,11 +139,13 @@ p {
     line-height: 17px;
     color:	#666 ;
 }
-:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle 
+{
     animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-color 6s ease-in-out infinite;
 }
 
-@keyframes custom-progress-spinner-color {
+@keyframes custom-progress-spinner-color 
+{
     100%,
     0% {
         stroke: #16697A;
@@ -143,7 +162,8 @@ p {
     }
 }
 
-@keyframes custom-progress-spinner-dash {
+@keyframes custom-progress-spinner-dash 
+{
     0% {
         stroke-dasharray: 1, 200;
         stroke-dashoffset: 0;

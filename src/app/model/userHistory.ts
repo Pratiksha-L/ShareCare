@@ -5,6 +5,6 @@ export class UserHistory
     quantity: number;
     stockName: string;
     currentPrice: number;
-    transactionType : string ;
+    tradeType : string ;
 
 }

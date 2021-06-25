@@ -13,6 +13,14 @@ import { User } from '../model/user';
 
 export class LoginComponent implements OnInit 
 {
+  //Immutable Data
+  pageTitle: string = "ShareCare" ;
+  tagline: string = "You need profits, We know profits !" ;
+  header: string = "Login" ;
+  label1: string = "Username" ;
+  label2: string = "Password" ;
+  errorMessage: string = "*Username and Password are compulsary" ;
+
   userName: string ;                      //Credentials: Username               
   password: string ;                      //Credentials: Password
   firstName : string ;                    //User's First Name
@@ -39,29 +47,7 @@ export class LoginComponent implements OnInit
     console.log('Decrypted Password :' + decrypted);
   }
 
-  //Function: Login
-  login() 
-  {
-    //Checking if Username & Password are provided or not
-    if (this.userName.length == 0 || this.password.length == 0) 
-    {
-      this.hasError = true;
-      return;
-    } 
-
-    else 
-    {
-      this.hasError = false;
-      sessionStorage.setItem("isLoggedIn","true");
-      sessionStorage.setItem("userName", this.userName) ;
-      this.router.navigate(["/dashboard"]);
-    }
-
-    console.log("Login Button is Clicked !" ) ;
-
-  }
-
-  //Error Handling
+  //Error Handling: Checking Login 
   checkLogin()
   {
     let temp: User = {userName : this.userName, firstName : this.firstName,lastName: this.lastName, password : btoa(this.password.split('').reverse().join('')) } ;
@@ -88,6 +74,28 @@ export class LoginComponent implements OnInit
     
     ) ;
      
+  }
+
+  //Function: Login
+  login() 
+  {
+    //Checking if Username & Password are provided or not
+    if (this.userName.length == 0 || this.password.length == 0) 
+    {
+      this.hasError = true;
+      return;
+    } 
+
+    else 
+    {
+      this.hasError = false;
+      sessionStorage.setItem("isLoggedIn","true");
+      sessionStorage.setItem("userName", this.userName) ;
+      this.router.navigate(["/dashboard"]);
+    }
+
+    console.log("Login Button is Clicked !" ) ;
+
   }
       
 }

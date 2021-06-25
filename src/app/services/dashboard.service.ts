@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http' ;
-import { PriceShockers } from '../model/price-shockers';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
+
+export class DashboardService 
+{
 
   constructor(private http:HttpClient) { }
 
@@ -29,16 +30,5 @@ export class DashboardService {
     return this.http.get(this.serviceUrl + "/dashboard/getTopGainer") ;
   }
 
-  // getStockPriceOfTopGainer()
-  // {
-  //   console.log("getStockPriceOfTopGainer: "+this.serviceUrl) ;
-  //   return this.http.get(this.serviceUrl + "/getStockPriceOfTopGainer") ;
-  // }
-
-  // getDatesOfTopGainer()
-  // {
-  //   console.log("getDatesOfTopGainer: "+this.serviceUrl) ;
-  //   return this.http.get(this.serviceUrl + "/getDatesOfTopGainer") ;
-  // }
 
 }

@@ -1,15 +1,15 @@
 
-<div class="panel-header panel-header-lg">
-  <ng-container appendTo="body" pTooltip={{topGainerDefinition}} tooltipPosition="bottom">
+<div class="panel-header panel-header-lg" style="overflow-x:auto">
+  <ng-container appendTo="body" pTooltip={{topGainerDefinition}} tooltipPosition="bottom" tooltipZIndex="1000">
     <h1 class="topleft">{{pageTitle}}Tata Steel</h1>
   </ng-container>
-  <!-- {{topGainer.companyName}} -->
-    <canvas baseChart id="bigDashboardChart"
-                [datasets]="lineBigDashboardChartData"
-                [labels]="lineBigDashboardChartLabels"
-                 [colors]="lineBigDashboardChartColors"
-                [options]="lineBigDashboardChartOptions"
-                [chartType]="lineBigDashboardChartType"
+  <!-- {{topGainer.companyName}} *ngIf="topGainerLineChartReady"-->
+    <canvas  baseChart id="bigDashboardChart"
+                [datasets]="topGainerLineChartData"
+                [labels]="topGainerLineChartLabels"
+                 [colors]="topGainerLineChartColors"
+                [options]="topGainerLineChartOptions"
+                [chartType]="topGainerChartType"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
                
@@ -26,7 +26,7 @@
           </h4>    
         </div>
         <div class="card-body">
-          <div class="table-responsive" style="overflow: hidden;">
+          <div class="table-responsive"> 
             <table class="table" > 
               <thead class=" text-primary">
                 <th [style]="{'width': '30rem'}" style="text-align: center;" *ngFor="let col of columnData">
@@ -45,21 +45,24 @@
                   </td>
 
                   <td style="color: black; text-align: center;">
-                    {{element.currentPrice | number}}
+                    {{element.currentPrice | number : '.2-2'}}
                   </td>
 
                   <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
-                    {{element.percentageChange}}
+                    {{element.percentageChange | number : '.2-2'}}
                   </td> 
+                  <td *ngIf="element.percentageChange == 0"  style="color:black; font-weight: 450; text-align: center;">
+                    {{element.percentageChange | number : '.2-2'}}
+                </td>
                   <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
-                      {{element.percentageChange}}
+                      {{element.percentageChange | number : '.2-2'}}
                   </td> 
                 
                 </tr>
             
               </tbody>
             </table>
-          </div>
+          </div> 
         </div>
      </div> 
     </div> 
@@ -73,15 +76,15 @@
               {{card2Title}}
             </h5>
           </div>
-
-          <div class="card-body">
+          <!-- *ngIf="volumeShockersBarGraphReady" -->
+          <div class="card-body"  >
             <div class="chart-area" [style]="{'height': '16rem'}">
                 <canvas baseChart id="barChartSimpleGradientsNumbers"
-                            [datasets]="lineChartGradientsNumbersData"
-                            [labels]="lineChartGradientsNumbersLabels"
-                            [colors]="lineChartGradientsNumbersColors"
-                            [options]="lineChartGradientsNumbersOptions"
-                            [chartType]="lineChartGradientsNumbersType"
+                            [datasets]="volumeShockerGradientsNumbersData"
+                            [labels]="volumeShockersGradientsNumbersLabels"
+                            [colors]="volumeShockersGradientsNumbersColors"
+                            [options]="volumeShockersGradientsNumbersOptions"
+                            [chartType]="volumeShockersGradientsNumbersType"
                             (chartHover)="chartHovered($event)"
                             (chartClick)="chartClicked($event)"></canvas>
             </div>

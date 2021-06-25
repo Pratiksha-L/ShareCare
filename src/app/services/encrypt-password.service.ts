@@ -4,11 +4,13 @@ import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
-export class EncryptPasswordService {
+
+export class EncryptPasswordService 
+{
 
   constructor() { }
 
-   //The set method is use for encrypt the value.
+   //Function: Set method is use for encrypt the value.
    set(keys: string, value: { toString: () => string; }){
     var key = CryptoJS.enc.Utf8.parse(keys);
     var iv = CryptoJS.enc.Utf8.parse(keys);
@@ -23,11 +25,13 @@ export class EncryptPasswordService {
     return encrypted.toString();
   }
 
-  //The get method is use for decrypt the value.
-  get(keys: string, value: string | CryptoJS.lib.CipherParams){
+  //Function: Get method is use for decrypt the value.
+  get(keys: string, value: string | CryptoJS.lib.CipherParams)
+  {
     var key = CryptoJS.enc.Utf8.parse(keys);
     var iv = CryptoJS.enc.Utf8.parse(keys);
-    var decrypted = CryptoJS.AES.decrypt(value, key, {
+    var decrypted = CryptoJS.AES.decrypt(value, key, 
+    {
         keySize: 128 / 8,
         iv: iv,
         mode: CryptoJS.mode.CBC,

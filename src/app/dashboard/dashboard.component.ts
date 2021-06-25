@@ -13,6 +13,28 @@ import { TopGainer } from '../model/top-gainer';
 
 export class DashboardComponent implements OnInit 
 {
+  //Top Gainer: Big Line Chart
+  public topGainerChartType: string;
+  public gradientStroke: { addColorStop: (arg0: number, arg1: string) => void; };
+  public chartColor: string;
+  public canvas : any;
+  public ctx:any ;
+  public gradientFill: { addColorStop: (arg0: number, arg1: string) => void; };
+  public topGainerLineChartData:Array<any>;
+  public topGainerLineChartOptions:any;
+  public topGainerLineChartLabels:Array<any>;
+  public topGainerLineChartColors:Array<any>
+  public gradientChartOptionsConfiguration: any;
+  public gradientChartOptionsConfigurationWithNumbersAndGrid: any;
+
+  //Volume Shockers: Bar Graph
+  public volumeShockersGradientsNumbersType: string;
+  public volumeShockerGradientsNumbersData:Array<any>;
+  public volumeShockersGradientsNumbersOptions:any;
+  public volumeShockersGradientsNumbersLabels:Array<any>;
+  public volumeShockersGradientsNumbersColors:Array<any>
+
+  //Immutable Data
   pageTitle : string = "NSE Top Gainer: " ;
   cardSubTitle : string = "TRENDING" ;
   card1Title : string = "Price Shockers" ;
@@ -25,73 +47,16 @@ export class DashboardComponent implements OnInit
     {label : "Sector"} ,
     {label : "Current Price(Rs.)"},
     {label : "%Change"}
-  ] ;
-
-  topGainer : TopGainer ;
-  volumeShockers : VolumeShockers[] ;             //Top 5 Volume Shockers
-  priceShockers : PriceShockers[] ;               //Top 5 Price Shockers
-  messageService: MessageService ;
-
-  //Top Gainer: Big Line Chart
-  public lineBigDashboardChartType;
-  public gradientStroke;
-  public chartColor;
-  public canvas : any;
-  public ctx;
-  public gradientFill;
-  public lineBigDashboardChartData:Array<any>;
-  public lineBigDashboardChartOptions:any;
-  public lineBigDashboardChartLabels:Array<any>;
-  public lineBigDashboardChartColors:Array<any>
-  public gradientChartOptionsConfiguration: any;
-  public gradientChartOptionsConfigurationWithNumbersAndGrid: any;
-
-  //Volume Shockers: Bar Graph
-  public lineChartType;
-  public lineChartData:Array<any>;
-  public lineChartOptions:any;
-  public lineChartLabels:Array<any>;
-  public lineChartColors:Array<any>
-  public lineChartWithNumbersAndGridType;
-  public lineChartWithNumbersAndGridData:Array<any>;
-  public lineChartWithNumbersAndGridOptions:any;
-  public lineChartWithNumbersAndGridLabels:Array<any>;
-  public lineChartWithNumbersAndGridColors:Array<any>
-  public lineChartGradientsNumbersType;
-  public lineChartGradientsNumbersData:Array<any>;
-  public lineChartGradientsNumbersOptions:any;
-  public lineChartGradientsNumbersLabels:Array<any>;
-  public lineChartGradientsNumbersColors:Array<any>
+  ] ;                                                  //Table Column Header Data
   
-  //Event: Big Line Chart Clicked
-  public chartClicked(e:any):void 
-  {
-    console.log("Chart is clicked ! ",e);
-  }
-
-  //Event: Big Line Chart Hovered
-  public chartHovered(e:any):void 
-  {
-    console.log("Chart is hovered ! ",e);
-  }
-
-  //Event: Coverting Hexadecimal to RGB
-  public hexToRGB(hex, alpha) 
-  {
-    var r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
-
-    if (alpha) 
-    {
-      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    } 
-    else 
-    {
-      return "rgb(" + r + ", " + g + ", " + b + ")";
-    }
-
-  }
+  topGainer : String = "" ;                            //Top Gainer Company Name
+  volumeShockers : VolumeShockers[] = [] ;             //Top 5 Volume Shockers
+  priceShockers : PriceShockers[] = [] ;               //Top 5 Price Shockers
+  messageService: MessageService ;                     //Message service from PrimeNG
+  closingPriceList : Number[] = [] ;                   //11 days Closing Price of Top Gainer
+  dateList : string[] = [] ;                           //Dates of last 11 days
+  // volumeShockersBarGraphReady:boolean = false ;
+  // topGainerLineChartReady:boolean = false ;
 
   constructor
   (
@@ -100,10 +65,238 @@ export class DashboardComponent implements OnInit
 
   ngOnInit() 
   {
+    this.getTopGainer() ;
     this.getPriceShockers() ;
     this.getVolumeShockers() ;
+  }
 
-    //Top Gainer
+  //Error Handling: Price Shockers
+  getPriceShockers()
+  {
+  this.dashboardService.getPriceShockers()
+  .subscribe((result : PriceShockers[]) =>
+    {
+      if(result == null )
+      {
+        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Price Shocker'}) ;
+      }
+      else
+      {
+      this.priceShockers = [];
+      let i=0;
+        result.forEach(priceShocker  => 
+        {
+          if(i<5) {
+          this.priceShockers.push({
+          companyName: priceShocker.companyName.replace("Limited", "") , 
+          sector: priceShocker.sector, 
+          currentPrice : priceShocker.currentPrice, 
+          percentageChange : priceShocker.percentageChange});
+          } else {
+          return;
+        }
+          i++; 
+        }) ;
+        
+  //this.configureCharts();
+      }
+    },
+    (err: any) =>
+    {
+      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })        
+    })
+  }
+
+  //Error Handling: Volume Shockers
+  getVolumeShockers()
+  {
+    this.dashboardService.getVolumeShockers()
+    .subscribe((result : VolumeShockers[]) => 
+    {
+      if(result == null )
+      {
+        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Volume Shocker'}) ;
+        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Error in fetching volume shockers'}) ;
+      }
+      else
+      {
+        this.volumeShockers = [];
+        let i=0;
+        result.forEach(volumeShocker  => 
+          {
+            if(i<5) 
+            {
+              this.volumeShockers.push({
+              companyName: volumeShocker.companyName.replace("Limited", "") , 
+              sector: volumeShocker.sector, 
+              volume: volumeShocker.volume, 
+              });
+            } 
+            else 
+            {
+              return;
+            }
+            i++;
+          }) ;
+        this.configureVolumeShockersBarGraph() ;
+      }
+    },
+    (err: any) =>
+    {
+      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })        
+    })
+  }
+
+  //Error Handling: Top Gainer
+  getTopGainer()
+  {
+    this.dashboardService.getTopGainer().subscribe((result : TopGainer[]) =>
+    {
+       
+      if(result == null || result.length ==0)
+      {
+        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Top Gainer Stock Name'}) ;
+
+      }
+      else
+      {
+        this.closingPriceList = [] ;
+        this.dateList = [] ;
+        this.topGainer = result[0].symbol  ;
+        result.forEach((day: TopGainer)  => {  
+          this.closingPriceList.push(day.close); 
+          let tempDate = new Date(day.date);
+          let temp : string[] =  tempDate.toDateString().split(" ");
+          let stockDate = temp[1]+ " " + temp[2];
+          this.dateList.push(stockDate);  
+        }); 
+        this.configureTopGainerLineChart() ;
+        //this.closePriceList = result.map(data => data.close);
+       // this.dateList = result.map(data => data.date);
+        console.log(this.dateList);
+        console.log(this.closingPriceList);
+      }
+
+    
+    }, 
+    (err: any) =>
+    {
+      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
+    })
+
+  }
+
+  //Function: Volume Shockers Bar Graph Configuration
+  configureVolumeShockersBarGraph()
+  {
+    //this.volumeShockersBarGraphReady = true ;
+    this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
+    this.ctx = this.canvas.getContext("2d");
+
+    this.gradientFill = this.ctx.createLinearGradient(20, 400, 100, 50);
+    this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+    this.gradientFill.addColorStop(1, this.hexToRGB('#2CA8FF', 0.7));
+
+
+    this.volumeShockerGradientsNumbersData = 
+    [
+      {
+        label: "Volume",
+        pointBorderWidth: 2,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 1,
+        pointRadius: 4,
+        fill: true,
+        borderWidth: 1,
+        data:this.volumeShockers.map(data => data.volume)
+      }
+    ];
+    this.volumeShockersGradientsNumbersColors = 
+    [
+     {
+       backgroundColor: this.gradientFill,
+       borderColor: "#2CA8FF",
+       pointBorderColor: "#FFF",
+       pointBackgroundColor: "#2CA8FF",
+     }
+   ];
+    console.log(this.volumeShockerGradientsNumbersData) ;
+
+    this.volumeShockersGradientsNumbersLabels = this.volumeShockers.map(data => data.companyName);
+    console.log(this.volumeShockersGradientsNumbersLabels);
+    
+    this.volumeShockersGradientsNumbersOptions = 
+    {
+      maintainAspectRatio: false,
+      legend: 
+      {
+        display: false
+      },
+      tooltips: 
+      {
+        bodySpacing: 4,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest",
+        xPadding: 10,
+        yPadding: 10,
+        caretPadding: 10
+      },
+      responsive: 1,
+      scales: 
+      {
+        yAxes: 
+        [{
+          gridLines: 
+          {
+            zeroLineColor: "transparent",
+            drawBorder: false
+          },
+          ticks: 
+          {
+              stepSize: 20
+          }
+        }],
+
+        xAxes: 
+        [{
+          display: true,
+          ticks: 
+          {
+            display: true,
+            maxRotation: -80
+            //autoSkip: true,
+            //autoSkipPadding: 30
+          },
+          gridLines: 
+          {
+            zeroLineColor: "transparent",
+            drawTicks: false,
+            display: false,
+            drawBorder: false
+          }
+        }]
+      },
+
+      layout: 
+      {
+        padding: 
+        {
+          left: 10,
+          right: 10,
+          top: 15,
+          bottom: 10
+        }
+      }
+    }
+
+    this.volumeShockersGradientsNumbersType = 'bar';
+  }
+
+  //Function: Top Gainer Line Chart Configuration
+  configureTopGainerLineChart() 
+  {
+    //this.topGainerLineChartReady = true ;
     this.chartColor = "#FFFFFF";
     this.canvas = document.getElementById("bigDashboardChart");
     this.ctx = this.canvas.getContext("2d");
@@ -116,23 +309,23 @@ export class DashboardComponent implements OnInit
     this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     this.gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.28)");
 
-    this.lineBigDashboardChartData = 
+    this.topGainerLineChartData = 
     [
         {
-          label: "Data",
-
+          label: "Close",
           pointBorderWidth: 1,
           pointHoverRadius: 7,
           pointHoverBorderWidth: 2,
           pointRadius: 5,
           fill: true,
-
           borderWidth: 2,
-          data: [50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95, 60, 110, 180, 220]
+          data: this.closingPriceList 
+          //[50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95, 60, 110, 180, 220]
+
         }
     ];
 
-    this.lineBigDashboardChartColors = 
+    this.topGainerLineChartColors = 
     [
        {
          backgroundColor: this.gradientFill,
@@ -144,12 +337,12 @@ export class DashboardComponent implements OnInit
        }
     ];
 
-    this.lineBigDashboardChartLabels = 
-    [
-      "10 July","11 July", "12 July", "13 July", "14 July", "15 July", "16 July", "17 July", "18 July", "19 July", "20 July", "21 July", "22 July", "22 July", "23 July"
-    ];
+    this.topGainerLineChartLabels = this.dateList;
+    //  [
+    //    "10 July","11 July", "12 July", "13 July", "14 July", "15 July", "16 July", "17 July", "18 July", "19 July", "20 July", "21 July", "22 July", "22 July", "23 July"
+    //  ];
 
-    this.lineBigDashboardChartOptions = 
+    this.topGainerLineChartOptions = 
     {
       layout: 
       {
@@ -194,7 +387,7 @@ export class DashboardComponent implements OnInit
                 beginAtZero: true,
                 maxTicksLimit: 8,
                 padding: 10
-              
+
               },
               gridLines: 
               {
@@ -226,7 +419,7 @@ export class DashboardComponent implements OnInit
       }
     };
 
-    this.lineBigDashboardChartType = 'line';
+    this.topGainerChartType = 'line';
 
 
     this.gradientChartOptionsConfiguration = {
@@ -328,272 +521,36 @@ export class DashboardComponent implements OnInit
       }
     };
 
-    //BAR Graph
-    this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
-    this.ctx = this.canvas.getContext("2d");
+  }
 
-    this.gradientFill = this.ctx.createLinearGradient(20, 400, 100, 50);
-    this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    this.gradientFill.addColorStop(1, this.hexToRGB('#2CA8FF', 0.7));
+  //Event: Big Line Chart Clicked
+  public chartClicked(e:any):void 
+  {
+    console.log("Chart is clicked ! ",e);
+  }
 
+  //Event: Big Line Chart Hovered
+  public chartHovered(e:any):void 
+  {
+    console.log("Chart is hovered ! ",e);
+  }
 
-    this.lineChartGradientsNumbersData = 
-    [
-      {
-        label: "Volume",
-        pointBorderWidth: 2,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 1,
-        pointRadius: 4,
-        fill: true,
-        borderWidth: 1,
-        data: [180, 200, 160, 140, 110]
-      }
-    ];
-    this.lineChartGradientsNumbersColors = 
-    [
-     {
-       backgroundColor: this.gradientFill,
-       borderColor: "#2CA8FF",
-       pointBorderColor: "#FFF",
-       pointBackgroundColor: "#2CA8FF",
-     }
-   ];
+  //Event: Coverting Hexadecimal to RGB
+  public hexToRGB(hex: string, alpha: string | number) 
+  {
+    var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
 
-    this.lineChartGradientsNumbersLabels = 
-    [
-      "MasterCard", "Persistent Systems", "Schneider Electric", "Citi Bank", "Boeing"
-    ];
-
-    this.lineChartGradientsNumbersOptions = 
+    if (alpha) 
     {
-      maintainAspectRatio: false,
-      legend: 
-      {
-        display: false
-      },
-      tooltips: 
-      {
-        bodySpacing: 4,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest",
-        xPadding: 10,
-        yPadding: 10,
-        caretPadding: 10
-      },
-      responsive: 1,
-      scales: 
-      {
-        yAxes: 
-        [{
-          gridLines: 
-          {
-            zeroLineColor: "transparent",
-            drawBorder: false
-          },
-          ticks: 
-          {
-              stepSize: 20
-          }
-        }],
-
-        xAxes: 
-        [{
-          display: true,
-          ticks: 
-          {
-            display: true,
-            maxRotation: -80
-            //autoSkip: true,
-            //autoSkipPadding: 30
-          },
-          gridLines: 
-          {
-            zeroLineColor: "transparent",
-            drawTicks: false,
-            display: false,
-            drawBorder: false
-          }
-        }]
-      },
-
-      layout: 
-      {
-        padding: 
-        {
-          left: 10,
-          right: 10,
-          top: 15,
-          bottom: 10
-        }
-      }
+      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } 
+    else 
+    {
+      return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 
-    this.lineChartGradientsNumbersType = 'bar';
-  
   }
-
-   //Error Handling
-   getPriceShockers()
-   {
-    this.dashboardService.getPriceShockers()
-    .subscribe((result : PriceShockers[]) =>
-     {
-       if(result == null )
-       {
-         this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Price Shocker'}) ;
-       }
-       else
-       {
-        this.priceShockers = [];
-        let i=0;
-         result.forEach(priceShocker  => 
-          {
-            if(i<5) {
-            this.priceShockers.push({
-            companyName: priceShocker.companyName.replace("Limited", "") , 
-            sector: priceShocker.sector, 
-            currentPrice : priceShocker.currentPrice, 
-            percentageChange : priceShocker.percentageChange});
-            } else {
-            return;
-          }
-            i++; 
-         }) ;
-       }
-     },
-     (err: any) =>
-     {
-       this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })        
-     })
-   }
-
-  //Error Handling
-  getVolumeShockers()
-  {
-    this.dashboardService.getVolumeShockers()
-    .subscribe((result : VolumeShockers[]) => 
-    {
-      if(result == null )
-      {
-        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Volume Shocker'}) ;
-      }
-      else
-      {
-        this.volumeShockers = [];
-        let i=0;
-        result.forEach(volumeShocker  => 
-          {
-            if(i<5) 
-            {
-              this.volumeShockers.push({
-              companyName: volumeShocker.companyName.replace("Limited", "") , 
-              sector: volumeShocker.sector, 
-              volume: volumeShocker.volume, 
-              });
-            } 
-            else 
-            {
-              return;
-            }
-            i++;
-          }) ;
-      }
-    },
-    (err: any) =>
-    {
-      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })        
-    })
-  }
-
-  //Error Handling
-  getTopGainer()
-  {
-    this.dashboardService.getTopGainer().subscribe((result : TopGainer) =>
-    {
-      if(result == null )
-      {
-        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Top Gainer Stock Name'}) ;
-
-      }
-      else
-      {
-        this.topGainer.companyName = result.companyName.replace("Limited", "") ;
-        this.topGainer.sector = result.sector ,
-        this.topGainer.dates = result.dates;
-        this.topGainer.closingPrice = result.closingPrice ;
-
-      }
-    
-    }, 
-    (err: any) =>
-    {
-      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
-    })
-
-  }
-
-  //Error Handling
-  // getStockPriceOfTopGainer()
-  // {
-  //   this.dashboardService.getStockPriceOfTopGainer()
-  //   .subscribe((result : number[]) =>
-  //   {
-  //     if(result == null )
-  //     {
-  //       this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Stock Price of Top Gainer'}) ;
-
-  //     }
-  //     else
-  //     {
-  //       result.forEach(stockPrice  => 
-  //       {
-
-  //         this.stockPriceOfTopGainer.push(stockPrice);
-          
-  //       }), 
-  //       (err: any) =>
-  //       {
-  //         this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
-  //       }
-
-  //     }
-
-  //   }, 
-  //   err => {  
-  //   })
-  // }
-
-  // //Error Handling
-  // getDatesOfTopGainer()
-  // {
-  //   this.dashboardService.getDatesOfTopGainer()
-  //   .subscribe((result : string[]) =>
-  //   {
-  //     if(result == null )
-  //     {
-  //       this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Date of Top Gainer'}) ;
-
-  //     }
-  //     else
-  //     {
-  //       result.forEach(date => 
-  //       {
-
-  //         this.datesOfTopGainer.push(date) ;
-         
-  //       }), 
-  //       (err: any) =>
-  //       {
-  //         this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })
-  //       }
-
-  //     }
-
-  //   }, 
-  //   err => {  
-  //   })
-  // }
 
 }

@@ -10,7 +10,8 @@ import Chart from 'chart.js';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit 
+{
     public userName : string ;
     private listTitles: any[];
     location: Location;
@@ -161,9 +162,5 @@ export class NavbarComponent implements OnInit {
       // return 'Market Trend';
     }
 
-    // getUsername()
-    // {
-    //   this.userName = sessionStorage.getItem("userName") ;
-    //   return this.userName ;
-    // }
+   
 }

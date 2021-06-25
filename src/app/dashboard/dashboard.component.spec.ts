@@ -39,4 +39,14 @@ describe('DashboardComponent', () => {
     expect(component.cardSubTitle).toEqual('TRENDING') ;
   })
 
+  it('#configureTopGainerLineChart() should set #topGainerChartType to line',async () => {
+    component.configureTopGainerLineChart() ;
+    expect(component.topGainerChartType).toEqual("line") ;
+  })
+
+  it('#configureVolumeShockersBarGraph() should set #topGainerChartType to bar',async () => {
+    component.configureVolumeShockersBarGraph() ;
+    expect(component.volumeShockersGradientsNumbersType).toEqual("bar") ;
+  })
+
 });

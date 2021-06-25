@@ -40,7 +40,7 @@ export class UserProfileComponent implements OnInit
         stockName:"P&G",
         currentPrice: 100,
         quantity: 250,
-        transactionType:"BUY"
+        tradeType:"BUY"
       },
       {
       userName: "Pratiksha",
@@ -48,7 +48,7 @@ export class UserProfileComponent implements OnInit
       stockName:"T&C",
       currentPrice: 105,
       quantity: 550,
-      transactionType:"BUY"
+      tradeType:"BUY"
      }
     ]
   }
@@ -78,7 +78,7 @@ export class UserProfileComponent implements OnInit
               quantity : history.quantity ,
               sector : history.sector ,
               stockName : history.stockName,
-              transactionType : history.transactionType 
+              tradeType : history.tradeType
           });
           
         }) ;

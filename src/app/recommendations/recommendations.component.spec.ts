@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StocksRecommended } from '../model/stocksRecommended';
 import { RecommendationsComponent } from './recommendations.component';
 
-describe('RecommendationsComponent', () => {
+describe('RecommendationsComponent', () => 
+{
   let component: RecommendationsComponent;
   let fixture: ComponentFixture<RecommendationsComponent>;
   let element : StocksRecommended ;
-  let event : any ;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,38 +43,50 @@ describe('RecommendationsComponent', () => {
   })
 
   it('#showDialogueBox() should set #displayDialogueBox to true',async () => {
-    component.showDialogueBox() ;
-    expect(component.displayDialogueBox).toBeTruthy() ;
+     component.showDialogueBox("Infosys") ;
+     expect(component.displayDialogueBox).toBeTruthy() ;
   })
  
-  // it('#showSuccessMessage() should set #displayDialogueBox to false & #selectedStockToSave to #element:StocksRecommended',async () => {
-  //   element = 
-  //   {
-  //     companyName : "Persistent Systems",
-  //     currentPrice : 2530.10 ,
-  //     bidPrice : 2456 ,
-  //     percentageChange : -12.10 ,
-  //     marketCap : 18960 ,
-  //     parameterValue : 879
-  //   } ;
-  //   component.showSuccessMessage(element) ;
-  //   expect(component.displayDialogueBox).toBeFalsy() ;
-  //   expect(component.selectedStockToSave).toEqual(element) ;
-  // })
-
-  it('#recommendationClick() should set #hasError to true if Sector or Parameter is/are null', async () => {
-    component.selectedSector = "" ;
-    component.selectedParameter = "Growth" ;
-    component.recommendationClick(event) ;
-    expect(component.hasError).toBeTruthy() ;
+  it('#showSuccessMessage() should set #displayDialogueBox to false & #selectedStockToSave to #element:StocksRecommended',async () => {
+     element = 
+     {
+      companyName : "Infosys"  ,
+      currentPrice : 1511.35 ,
+      percentageChange : 9 ,
+      marketCap : 642000 ,
+      growth : 0 ,
+      volume : 6427862 ,
+      eps : 0 ,
+      pe : 33.20 ,
+      dividends : 1.79 ,
+      movingAverage : 1471.36 ,
+      close : 1500.30 
+     } ;
+     component.showSuccessMessage(element) ;
+     expect(component.displayDialogueBox).toBeFalsy() ;
+     expect(component.selectedStockToSave).toEqual(element) ;
   })
 
-  it('#recommendationClick() should set #hasError to false if Sector and Parameter are not null',async () => {
-    component.selectedSector = "Automobile" ;
-    component.selectedParameter = "Growth" ;
-    component.recommendationClick(event) ;
+  it('#recommendationButtonClick() should set #hasError to true if Sector or Parameter is/are null', async () => {
+     component.selectedSector = "" ;
+     component.selectedParamValue = "growth" ;
+     component.recommendationButtonClick() ;
+     expect(component.hasError).toBeTruthy() ;
+  })
+
+  it('#recommendationButtonClick() should set #hasError to false if Sector and Parameter are not null',async () => {
+     component.selectedSector = "Automobile" ;
+     component.selectedParamValue = "growth" ;
+     component.recommendationButtonClick() ;
     expect(component.hasError).toBeFalsy() ;
   })
+
+  it('#initialBarGraphConfiguration() should set #lineChartGradientsNumbersType to bar',async () => {
+    component.initialBarGraphConfiguration() ;
+    expect(component.barGraphGradientsNumbersType).toEqual("bar") ;
+ })
+
+ 
 });
 
 

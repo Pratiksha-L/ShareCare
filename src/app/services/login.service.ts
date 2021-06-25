@@ -7,10 +7,8 @@ import {User} from '../model/user' ;
 })
 export class LoginService {
 
-  serviceUrl = "" ;//Backend url
-
+  serviceUrl = "" ;//http://localhost:8080
   isValidUser : boolean = false ;
-  //loggedInUser: User;
 
   constructor(private http:HttpClient) { }
 

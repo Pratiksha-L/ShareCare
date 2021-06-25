@@ -11,14 +11,14 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
 import {CardModule} from 'primeng/card';
-import {DropdownModule} from 'primeng/dropdown';
-import {InputTextModule} from 'primeng/inputtext';
-import {PasswordModule} from 'primeng/password';
+import { DropdownModule} from 'primeng/dropdown';
+import { InputTextModule} from 'primeng/inputtext';
+import { PasswordModule} from 'primeng/password';
 import { ButtonModule  } from 'primeng/button';
-import {MessageService} from 'primeng/api';
-import {ToastModule } from 'primeng/toast';
-import {AuthguardService} from './authguard.service';
-import {TabViewModule} from 'primeng/tabview';
+import { MessageService} from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { AuthguardService} from './authguard.service';
+import { TabViewModule} from 'primeng/tabview';
 
 @NgModule({
   imports: [
