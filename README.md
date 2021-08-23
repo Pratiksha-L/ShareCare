@@ -1,5 +1,9 @@
 # Citi Bridge Program : Group 2 : Sector Based Trade Recommendation System![Screenshot (351)](https://user-images.githubusercontent.com/60769966/130493983-b3df7f82-637a-4b04-b80c-d521d23b7776.png)
 
+# Technology Stack 🏁
+  Angular
+  Springboot
+  MySql
 
 ## Terminal Commands
 
