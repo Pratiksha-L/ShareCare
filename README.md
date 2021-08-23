@@ -4,8 +4,7 @@
 # Technology Stack 🏁
  * Angular
  * Springboot
- * 
-MySql
+ * MySql
 
 ## Terminal Commands
 
