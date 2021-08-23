@@ -46,26 +46,6 @@ describe('RecommendationsComponent', () =>
      component.showDialogueBox("Infosys") ;
      expect(component.displayDialogueBox).toBeTruthy() ;
   })
- 
-  it('#showSuccessMessage() should set #displayDialogueBox to false & #selectedStockToSave to #element:StocksRecommended',async () => {
-     element = 
-     {
-      companyName : "Infosys"  ,
-      currentPrice : 1511.35 ,
-      percentageChange : 9 ,
-      marketCap : 642000 ,
-      growth : 0 ,
-      volume : 6427862 ,
-      eps : 0 ,
-      pe : 33.20 ,
-      dividends : 1.79 ,
-      movingAverage : 1471.36 ,
-      close : 1500.30 
-     } ;
-     component.showSuccessMessage(element) ;
-     expect(component.displayDialogueBox).toBeFalsy() ;
-     expect(component.selectedStockToSave).toEqual(element) ;
-  })
 
   it('#recommendationButtonClick() should set #hasError to true if Sector or Parameter is/are null', async () => {
      component.selectedSector = "" ;

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../model/user';
 import { UserHistory } from '../model/userHistory';
-import {UserProfileService} from '../services/user-profile.service'
-import { StocksRecommended } from '../model/stocksRecommended';
-import { MessageService } from 'primeng/api';
+import {MessageService} from 'primeng/api';
+import {UserProfileService} from '../services/user-profile.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,86 +10,83 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./user-profile.component.css']
 })
 
-export class UserProfileComponent implements OnInit 
-{
-  
+export class UserProfileComponent implements OnInit {
+
+  // Immutable Data
   user : User;
   userHistory : UserHistory[];
   imgUrl: string;
- 
-  constructor(private userProfileService :UserProfileService , private messageService: MessageService) { }
+  pageTitle : string = "User Profile" ;
+  showUserHistory: boolean = false;
+  userName: string = "";
+  lastName: string = "";
+  firstName: string = "";
 
-  ngOnInit() 
-  {
-
-    this.getSavedStocks() ;
-
-    this.user = {
-      userName : "mike",
-      firstName: "Madhura",
-      lastName: "Dongare",
-      password: "abc"
-    }
-     this.imgUrl = "../assets/img/"+this.user.userName+".jpg";
-
-    this.userHistory = [
-      {
-        userName: "Madhura",
-        sector:"FMCG",
-        stockName:"P&G",
-        currentPrice: 100,
-        quantity: 250,
-        tradeType:"BUY"
-      },
-      {
-      userName: "Pratiksha",
-      sector:"FMCGAC",
-      stockName:"T&C",
-      currentPrice: 105,
-      quantity: 550,
-      tradeType:"BUY"
-     }
-    ]
-  }
+  constructor(
+    private messageService : MessageService,
+    private userProfileService :UserProfileService ,
+    ) { }
 
    
-  
-  //Error Handling
-  getSavedStocks()
+  ngOnInit() 
   {
-    this.userProfileService.getSavedStocks().
-    subscribe((result :UserHistory[]) =>
-    {
-      if(result == null )
-      {
-        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Sector or Parameter'}) ;
-
-      }
-      else
-      {
-        this.userHistory = [];
-        result.forEach(history  => 
-          {
-
-          this.userHistory.push({
-              userName : history.userName ,
-              currentPrice : history.currentPrice ,
-              quantity : history.quantity ,
-              sector : history.sector ,
-              stockName : history.stockName,
-              tradeType : history.tradeType
-          });
-          
-        }) ;
-      }
-    
-    },
-    (err: any) =>
-    {
-      this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down '  })        
-    })
-
+    this.user = JSON.parse(sessionStorage.getItem("user"));
+    this.firstName = this.user.firstName;
+    this.lastName = this.user.lastName;
+    this.userName = sessionStorage.getItem("userName");
+    this.imgUrl = "../assets/img/"+this.userName+".jpeg"; 
+    this.getSavedStocks();
   }
 
+  //Error Handling 
+  getSavedStocks() 
+  { 
+    this.userProfileService.getSavedStocks(this.userName). 
+    subscribe((result :UserHistory[]) => 
+    { 
+      if(result == null ) 
+      { 
+        this.messageService.add({severity : 'error', summary : 'Error',detail : 'Incorrect Saved Stocks Details'}) ;
+      } 
+      else 
+      { 
+        this.userHistory = []; 
+        result.forEach(history => 
+          { 
+            this.userHistory.push({ 
+              userName : history.userName , 
+              currentPrice : history.currentPrice , 
+              quantity : history.quantity , 
+              sector : history.sector , 
+              stockName : history.stockName, 
+              tradeType : history.tradeType 
+            }); 
+          }) ; 
+         
+        }
+        this.showUserHistory = true; 
+      }, 
+      (err: any) => 
+      { 
+        this.messageService.add({severity: 'error', summary : 'Error',detail : 'Unable to fetch data, server down ' }) 
+      }) 
+    } 
 
+  //Function: Displaying Buy in Green
+  checkTradeTypeBUY(tradeType : String)
+  {
+      return tradeType === "BUY" ;
+  }
+
+  //Function: Displaying Hold in Blue
+  checkTradeTypeHOLD(tradeType : String)
+  {
+      return tradeType === "HOLD" ;
+  }
+
+  //Function: Displaying Sell in Red
+  checkTradeTypeSELL(tradeType : String)
+  {
+      return tradeType === "SELL" ;
+  }
 }

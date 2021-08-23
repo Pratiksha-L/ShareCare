@@ -1,9 +1,12 @@
-
 <div class="panel-header panel-header-lg" style="overflow-x:auto">
-  <ng-container appendTo="body" pTooltip={{topGainerDefinition}} tooltipPosition="bottom" tooltipZIndex="1000">
-    <h1 class="topleft">{{pageTitle}}Tata Steel</h1>
+
+  <p-progressSpinner *ngIf="topGainerNotReady" [style]="{width: '100px', height: '100px','padding-top':'30px', 'padding-left': '900px'}" styleClass="custom-spinner"
+    strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+  
+    <ng-container appendTo="body" pTooltip={{topGainerDefinition}} tooltipPosition="bottom" tooltipZIndex="1000">
+    <h1 class="topleft">{{pageTitle}}{{topGainer |titlecase}}</h1>
   </ng-container>
-  <!-- {{topGainer.companyName}} *ngIf="topGainerLineChartReady"-->
+  
     <canvas  baseChart id="bigDashboardChart"
                 [datasets]="topGainerLineChartData"
                 [labels]="topGainerLineChartLabels"
@@ -18,7 +21,7 @@
 <div class="main-content">
   <div class="row">
     <div class="col-lg-6">
-      <div class="card" [style]="{'width': '40rem'}">
+      <div class="card" [style]="{'width': '40rem','height': '31rem'}">
         <div class="card-header" >
           <h5 class="card-category1">{{cardSubTitle}}</h5>  
           <h4 class="card-title" pTooltip={{priceShockerDefinition}} style="width: 194px;">
@@ -68,7 +71,7 @@
     </div> 
 
     <div class="col-lg-4 col-md-6">
-      <div class="card card-chart" [style]="{'width': '33rem' ,'height': '25.3rem'}">
+      <div class="card card-chart" [style]="{'width': '33rem' ,'height': '31rem'}">
           
           <div class="card-header">
             <h5 class="card-category2">{{cardSubTitle}}</h5>
@@ -76,9 +79,9 @@
               {{card2Title}}
             </h5>
           </div>
-          <!-- *ngIf="volumeShockersBarGraphReady" -->
+         
           <div class="card-body"  >
-            <div class="chart-area" [style]="{'height': '16rem'}">
+            <div class="chart-area" [style]="{'height': '20rem'}">
                 <canvas baseChart id="barChartSimpleGradientsNumbers"
                             [datasets]="volumeShockerGradientsNumbersData"
                             [labels]="volumeShockersGradientsNumbersLabels"
@@ -102,73 +105,3 @@
   
 </div>
 
-<!-- TESTING -->
-<br>
-<div>
-  <h4>Volume Shocker testing </h4>
-  <table class="table" [style]="{'width': '40rem'}">
-    <thead class=" text-primary">
-      <th>
-        Company Name
-      </th>
-      <th>
-        Sector
-      </th>
-      <th>
-        Volume 
-      </th>
-    </thead>
-    <tbody >
-       <tr *ngFor="let element of volumeShockers"> 
-        
-        <td style="font-weight: 550; color: black;">
-          {{element.companyName}}
-        </td>
-
-        <td style="color: black;">
-          {{element.sector}}
-        </td>
-
-        <td style="color: black; text-align: center;">
-          {{element.volume | number}}
-        </td>
-      </tr>
-  
-    </tbody>
-  </table>
-</div>
-
-<!-- TESTING -->
-<!-- <br><br><br><br><br><br><br>
-<div>
-  <h4>Top Gainer Testing </h4>
-  <h3>{{topGainer.companyName}} - {{topGainer.sector}}</h3>
-  <table class="table" [style]="{'width': '40rem'}">
-    <thead class=" text-primary">
-      <th>
-        Dates
-      </th>
-      <th>
-       Closing Price
-      </th>
-    </thead>
-    <tbody >
-       <tr *ngFor="let element of topGainer.dates"> 
-
-        <td style="color: black; text-align: center;">
-          {{element | number}}
-        </td>
-
-      </tr>
-
-      <tr *ngFor="let element of topGainer.closingPrice"> 
-
-        <td style="color: black; text-align: center;">
-          {{element | number}}
-        </td>
-
-      </tr>
-  
-    </tbody>
-  </table>
-</div> -->

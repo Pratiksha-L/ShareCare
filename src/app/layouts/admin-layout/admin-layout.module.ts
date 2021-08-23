@@ -17,9 +17,15 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {ToastModule} from 'primeng/toast';
 import {TooltipModule} from 'primeng/tooltip';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {BlockUIModule} from 'primeng/blockui';
+import {PanelModule} from 'primeng/panel';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   imports: [
+    TableModule,
+    PanelModule,
+    BlockUIModule,
     ProgressSpinnerModule,
     TooltipModule,
     ToastModule,

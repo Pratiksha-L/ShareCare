@@ -4,13 +4,12 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
-// import { AuthguardService } from './authguard.service';
+import { AuthguardService } from './authguard.service';
 
 const routes: Routes =[
   {
     path: '',
     redirectTo: 'login',
-    // canActivate : [AuthguardService],
     pathMatch: 'full',
   }, {
     path: 'login',
@@ -20,6 +19,7 @@ const routes: Routes =[
 
     path: '',
     component: AdminLayoutComponent,
+    canActivate : [AuthguardService],
     children: [
         {
       path: '',

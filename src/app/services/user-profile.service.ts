@@ -19,10 +19,10 @@ export class UserProfileService
     return this.http.post(this.serviceUrl + "/userProfile/addSavedStocks" , savedCompanyDetails) ;
   }
 
-  getSavedStocks()
+  getSavedStocks(userName: string)
   {
     console.log("getSavedStocks : "+this.serviceUrl) ;
-    return this.http.get(this.serviceUrl + "/userProfile/getSavedStocks") ;
+    return this.http.get(this.serviceUrl + "/userProfile/getSavedStocks?userName="+userName) ;
   }
 
 }

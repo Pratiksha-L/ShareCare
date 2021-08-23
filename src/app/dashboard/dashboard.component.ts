@@ -52,15 +52,19 @@ export class DashboardComponent implements OnInit
   topGainer : String = "" ;                            //Top Gainer Company Name
   volumeShockers : VolumeShockers[] = [] ;             //Top 5 Volume Shockers
   priceShockers : PriceShockers[] = [] ;               //Top 5 Price Shockers
-  messageService: MessageService ;                     //Message service from PrimeNG
   closingPriceList : Number[] = [] ;                   //11 days Closing Price of Top Gainer
   dateList : string[] = [] ;                           //Dates of last 11 days
-  // volumeShockersBarGraphReady:boolean = false ;
-  // topGainerLineChartReady:boolean = false ;
+ 
+  minimumClosingPrice : number = 0 ;                  //Minimum closing price        
+  maximumClosingPrice : number = 0 ;                  //Minimum closing price   
+  minimumVolume : number = 0 ;                        //Minimum volume
+  maximumVolume : number = 0 ;                        //Maximum closing price
+  topGainerNotReady : boolean = true ;                //Check for progress spinner
 
   constructor
   (
-    private dashboardService : DashboardService
+    private dashboardService : DashboardService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() 
@@ -98,7 +102,6 @@ export class DashboardComponent implements OnInit
           i++; 
         }) ;
         
-  //this.configureCharts();
       }
     },
     (err: any) =>
@@ -138,6 +141,9 @@ export class DashboardComponent implements OnInit
             }
             i++;
           }) ;
+
+        this.findMinimumVolume() ;
+        this.findMaximumVolume() ;
         this.configureVolumeShockersBarGraph() ;
       }
     },
@@ -162,7 +168,6 @@ export class DashboardComponent implements OnInit
       {
         this.closingPriceList = [] ;
         this.dateList = [] ;
-        this.topGainer = result[0].symbol  ;
         result.forEach((day: TopGainer)  => {  
           this.closingPriceList.push(day.close); 
           let tempDate = new Date(day.date);
@@ -170,11 +175,12 @@ export class DashboardComponent implements OnInit
           let stockDate = temp[1]+ " " + temp[2];
           this.dateList.push(stockDate);  
         }); 
+        this.topGainer = result[0].symbol.replace(".NS", "") ; 
+        this.minimumClosingPrice = this.round(Math.round(Math.min.apply(null, this.closingPriceList))) ; 
+        this.maximumClosingPrice = this.round(Math.round(Math.max.apply(null, this.closingPriceList))) ;
         this.configureTopGainerLineChart() ;
-        //this.closePriceList = result.map(data => data.close);
-       // this.dateList = result.map(data => data.date);
-        console.log(this.dateList);
-        console.log(this.closingPriceList);
+        this.topGainerNotReady = false;
+        
       }
 
     
@@ -186,117 +192,87 @@ export class DashboardComponent implements OnInit
 
   }
 
-  //Function: Volume Shockers Bar Graph Configuration
-  configureVolumeShockersBarGraph()
+  //Event: Big Line Chart Clicked
+  public chartClicked(e:any):void 
   {
-    //this.volumeShockersBarGraphReady = true ;
-    this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
-    this.ctx = this.canvas.getContext("2d");
+  }
 
-    this.gradientFill = this.ctx.createLinearGradient(20, 400, 100, 50);
-    this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    this.gradientFill.addColorStop(1, this.hexToRGB('#2CA8FF', 0.7));
+  //Event: Big Line Chart Hovered
+  public chartHovered(e:any):void 
+  {
+   
+  }
 
+  //Event: Coverting Hexadecimal to RGB
+  public hexToRGB(hex: string, alpha: string | number) 
+  {
+    var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
 
-    this.volumeShockerGradientsNumbersData = 
-    [
-      {
-        label: "Volume",
-        pointBorderWidth: 2,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 1,
-        pointRadius: 4,
-        fill: true,
-        borderWidth: 1,
-        data:this.volumeShockers.map(data => data.volume)
-      }
-    ];
-    this.volumeShockersGradientsNumbersColors = 
-    [
-     {
-       backgroundColor: this.gradientFill,
-       borderColor: "#2CA8FF",
-       pointBorderColor: "#FFF",
-       pointBackgroundColor: "#2CA8FF",
-     }
-   ];
-    console.log(this.volumeShockerGradientsNumbersData) ;
-
-    this.volumeShockersGradientsNumbersLabels = this.volumeShockers.map(data => data.companyName);
-    console.log(this.volumeShockersGradientsNumbersLabels);
-    
-    this.volumeShockersGradientsNumbersOptions = 
+    if (alpha) 
     {
-      maintainAspectRatio: false,
-      legend: 
-      {
-        display: false
-      },
-      tooltips: 
-      {
-        bodySpacing: 4,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest",
-        xPadding: 10,
-        yPadding: 10,
-        caretPadding: 10
-      },
-      responsive: 1,
-      scales: 
-      {
-        yAxes: 
-        [{
-          gridLines: 
-          {
-            zeroLineColor: "transparent",
-            drawBorder: false
-          },
-          ticks: 
-          {
-              stepSize: 20
-          }
-        }],
-
-        xAxes: 
-        [{
-          display: true,
-          ticks: 
-          {
-            display: true,
-            maxRotation: -80
-            //autoSkip: true,
-            //autoSkipPadding: 30
-          },
-          gridLines: 
-          {
-            zeroLineColor: "transparent",
-            drawTicks: false,
-            display: false,
-            drawBorder: false
-          }
-        }]
-      },
-
-      layout: 
-      {
-        padding: 
-        {
-          left: 10,
-          right: 10,
-          top: 15,
-          bottom: 10
-        }
-      }
+      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } 
+    else 
+    {
+      return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 
-    this.volumeShockersGradientsNumbersType = 'bar';
+  }
+
+  //Function: Finding minimum volume
+  findMinimumVolume()
+  {
+    var minimum : number = this.volumeShockers[0].volume ;
+      for(let i = 1 ;i < this.volumeShockers.length ; ++i)
+      {
+        if(minimum > this.volumeShockers[i].volume)
+        {
+          minimum = this.volumeShockers[i].volume ;
+        }
+      }
+
+    
+    this.minimumVolume = this.round(Math.round(minimum)) ;
+    
+  }
+
+  //Function: Finding maximum volume
+  findMaximumVolume()
+  {
+    var maximum : number = this.volumeShockers[0].volume ;
+      for(let i = 1 ;i < this.volumeShockers.length ; ++i)
+      {
+        if(maximum < this.volumeShockers[i].volume)
+        {
+          maximum = this.volumeShockers[i].volume ;
+        }
+      }
+
+    
+    this.maximumVolume = this.round(Math.round(maximum)) ;
+    
+  }
+
+  //Function: Rounding the given number to nearest multiple of 100
+  round(n : number)
+  {
+      // Smaller multiple
+      console.log("n : ",n) ;
+      let a = Math.floor(n/100) * 100 ; 
+      console.log("a : ",a) ;
+      // Larger multiple
+      let b = a + 100;
+      console.log("b" ,b) ;
+      
+      // Return of closest of two
+      return (n - a > b - n)? b : a;
   }
 
   //Function: Top Gainer Line Chart Configuration
   configureTopGainerLineChart() 
   {
-    //this.topGainerLineChartReady = true ;
     this.chartColor = "#FFFFFF";
     this.canvas = document.getElementById("bigDashboardChart");
     this.ctx = this.canvas.getContext("2d");
@@ -320,28 +296,25 @@ export class DashboardComponent implements OnInit
           fill: true,
           borderWidth: 2,
           data: this.closingPriceList 
-          //[50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95, 60, 110, 180, 220]
+          
 
         }
     ];
 
     this.topGainerLineChartColors = 
     [
-       {
-         backgroundColor: this.gradientFill,
-         borderColor: this.chartColor,
-         pointBorderColor: this.chartColor,
-         pointBackgroundColor: "#2c2c2c",
-         pointHoverBackgroundColor: "#2c2c2c",
-         pointHoverBorderColor: this.chartColor,
-       }
+      {
+        backgroundColor: this.gradientFill,
+        borderColor: this.chartColor,
+        pointBorderColor: this.chartColor,
+        pointBackgroundColor: "#2c2c2c",
+        pointHoverBackgroundColor: "#2c2c2c",
+        pointHoverBorderColor: this.chartColor,
+      }
     ];
 
     this.topGainerLineChartLabels = this.dateList;
-    //  [
-    //    "10 July","11 July", "12 July", "13 July", "14 July", "15 July", "16 July", "17 July", "18 July", "19 July", "20 July", "21 July", "22 July", "22 July", "23 July"
-    //  ];
-
+    
     this.topGainerLineChartOptions = 
     {
       layout: 
@@ -386,8 +359,10 @@ export class DashboardComponent implements OnInit
                 fontStyle: "bold",
                 beginAtZero: true,
                 maxTicksLimit: 8,
-                padding: 10
-
+                padding: 10,
+                stepSize : 80,
+                min : this.minimumClosingPrice - 100,
+                max : this.maximumClosingPrice + 100
               },
               gridLines: 
               {
@@ -411,9 +386,9 @@ export class DashboardComponent implements OnInit
 
               ticks: 
               {
-                padding: 10,
+                padding: 10 ,
                 fontColor: "rgba(255,255,255,0.4)",
-                fontStyle: "bold"
+                fontStyle: "bold",
               }
           }]
       }
@@ -495,7 +470,7 @@ export class DashboardComponent implements OnInit
             drawBorder: false
           },
           ticks: {
-              stepSize: 500
+              stepSize: 1000
           }
         }],
         xAxes: [{
@@ -523,34 +498,123 @@ export class DashboardComponent implements OnInit
 
   }
 
-  //Event: Big Line Chart Clicked
-  public chartClicked(e:any):void 
+  //Function: Volume Shockers Bar Graph Configuration
+  configureVolumeShockersBarGraph()
   {
-    console.log("Chart is clicked ! ",e);
-  }
+    //this.volumeShockersBarGraphReady = true ;
+    this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
+    this.ctx = this.canvas.getContext("2d");
 
-  //Event: Big Line Chart Hovered
-  public chartHovered(e:any):void 
-  {
-    console.log("Chart is hovered ! ",e);
-  }
+    this.gradientFill = this.ctx.createLinearGradient(20, 400, 100, 50);
+    this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+    this.gradientFill.addColorStop(1, this.hexToRGB('#2CA8FF', 0.7));
 
-  //Event: Coverting Hexadecimal to RGB
-  public hexToRGB(hex: string, alpha: string | number) 
-  {
-    var r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
 
-    if (alpha) 
+    this.volumeShockerGradientsNumbersData = 
+    [
+      {
+        label: "Volume",
+        pointBorderWidth: 2,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 1,
+        pointRadius: 4,
+        fill: true,
+        borderWidth: 1,
+        data:this.volumeShockers.map(data => data.volume)
+      }
+    ];
+    this.volumeShockersGradientsNumbersColors = 
+    [
     {
-      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    } 
-    else 
+      backgroundColor: this.gradientFill,
+      borderColor: "#2CA8FF",
+      pointBorderColor: "#FFF",
+      pointBackgroundColor: "#2CA8FF",
+    }
+  ];
+    console.log(this.volumeShockerGradientsNumbersData) ;
+
+    this.volumeShockersGradientsNumbersLabels = this.volumeShockers.map(data => data.companyName);
+    console.log(this.volumeShockersGradientsNumbersLabels);
+    
+    this.volumeShockersGradientsNumbersOptions = 
     {
-      return "rgb(" + r + ", " + g + ", " + b + ")";
+      maintainAspectRatio: false,
+      legend: 
+      {
+        display: false
+      },
+      tooltips: 
+      {
+        bodySpacing: 4,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest",
+        xPadding: 10,
+        yPadding: 10,
+        caretPadding: 10
+      },
+      responsive: 1,
+      scales: 
+      {
+        yAxes: 
+        [{
+          gridLines: 
+          {
+            zeroLineColor: "transparent",
+            drawBorder: false
+          },
+          ticks: 
+          {
+              stepSize: 20,
+              min : this.minimumVolume - 10000000 ,
+              max : this.maximumVolume + 10000000  ,
+              maxTicksLimit : 6,
+              letterSpacing: "0.2px",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" ,
+              fontColor: "black",
+              lineHeight: "17px"
+          }
+        }],
+        xAxes: [
+          {
+            ticks: {
+              callback: function(label, index, labels) {
+                if (/\s/.test(label)) {
+                  return label.split(" ");
+                }else{
+                  return label;
+                }              
+              } ,
+              letterSpacing: "0.2px",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" ,
+              fontColor: "black",
+              lineHeight: "17px"    
+            },
+            gridLines: 
+            {
+              zeroLineColor: "transparent",
+              display: false,
+              drawBorder: false
+            },
+            
+          }
+        ]
+      },
+
+      layout: 
+      {
+        padding: 
+        {
+          left: 10,
+          right: 10,
+          top: 15,
+          bottom: 10
+        }
+      }
     }
 
+    this.volumeShockersGradientsNumbersType = 'bar';
   }
 
 }

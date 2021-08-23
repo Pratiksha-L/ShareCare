@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MessageService} from 'primeng/api'
-import { EncryptPasswordService } from '../services/encrypt-password.service';
 import { LoginService } from '../services/login.service';
 import { User } from '../model/user';
 
@@ -20,31 +19,23 @@ export class LoginComponent implements OnInit
   label1: string = "Username" ;
   label2: string = "Password" ;
   errorMessage: string = "*Username and Password are compulsary" ;
-
-  userName: string ;                      //Credentials: Username               
-  password: string ;                      //Credentials: Password
-  firstName : string ;                    //User's First Name
-  lastName : string ;                     //User's Last Name
-  hasError: boolean = false;              //Check if Username & Password are provided or not
+  
+  userName: string = "" ;                     //Credentials: Username               
+  password: string = "";                      //Credentials: Password
+  firstName : string = "" ;                   //User's First Name
+  lastName : string = "";                     //User's Last Name
+  hasError: boolean = false;                  //Check if Username & Password are provided or not
 
   constructor
   (
     private loginService: LoginService, 
     private messageService: MessageService,
     private router: Router, 
-    private encrypt : EncryptPasswordService,
-   
+    
    ) { }
 
   ngOnInit(): void 
   {
-    localStorage.setItem('SessionUser',this.userName) 
-
-    var encrypted = this.encrypt.set('123456$#@$^@1ERF', this.password);
-    var decrypted = this.encrypt.get('123456$#@$^@1ERF', encrypted);
-   
-    console.log('Encrypted Password:' + encrypted);
-    console.log('Decrypted Password :' + decrypted);
   }
 
   //Error Handling: Checking Login 
@@ -52,9 +43,8 @@ export class LoginComponent implements OnInit
   {
     let temp: User = {userName : this.userName, firstName : this.firstName,lastName: this.lastName, password : btoa(this.password.split('').reverse().join('')) } ;
 
-     this.loginService.checkLogin(temp).subscribe((result : boolean) =>
+     this.loginService.checkLogin(temp).subscribe((result : User) =>
      {
-        this.loginService.isValidUser = result ;
 
         if(result == null )
         {
@@ -64,8 +54,10 @@ export class LoginComponent implements OnInit
         else
         {
           sessionStorage.setItem("isLoggedIn", "true") ;
-          //this.loginService.loggedInUser = result;
-          this.router.navigate(['/dashboard']) ;
+          sessionStorage.setItem("userName", this.userName) ;
+          sessionStorage.setItem("user", JSON.stringify(result)) ;
+          this.loginService.user = result;
+          this.router.navigate(["/dashboard"]);
         }
       }, (err: any) =>
       {
@@ -76,8 +68,8 @@ export class LoginComponent implements OnInit
      
   }
 
-  //Function: Login
-  login() 
+  //Function: Validating Login
+  validateLogin() 
   {
     //Checking if Username & Password are provided or not
     if (this.userName.length == 0 || this.password.length == 0) 
@@ -89,13 +81,10 @@ export class LoginComponent implements OnInit
     else 
     {
       this.hasError = false;
-      sessionStorage.setItem("isLoggedIn","true");
-      sessionStorage.setItem("userName", this.userName) ;
-      this.router.navigate(["/dashboard"]);
+      this.checkLogin() ;
     }
 
-    console.log("Login Button is Clicked !" ) ;
-
+    
   }
       
 }

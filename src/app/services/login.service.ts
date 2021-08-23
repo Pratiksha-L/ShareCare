@@ -7,13 +7,16 @@ import {User} from '../model/user' ;
 })
 export class LoginService {
 
-  serviceUrl = "" ;//http://localhost:8080
+  serviceUrl = "http://localhost:8080" ;
   isValidUser : boolean = false ;
+  user: User;
 
   constructor(private http:HttpClient) { }
 
   checkLogin(obj : User)
   {
-    return this.http.post<boolean>(this.serviceUrl + "/login" ,obj ) 
+    console.log("checkLogin is called !") ;
+    return this.http.post<User>(this.serviceUrl + "/userlogin/login" ,obj ) ;
   }
+
 }

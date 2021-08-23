@@ -30,5 +30,4 @@ export class DashboardService
     return this.http.get(this.serviceUrl + "/dashboard/getTopGainer") ;
   }
 
-
 }
