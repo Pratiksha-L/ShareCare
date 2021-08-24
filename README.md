@@ -2,9 +2,11 @@
 
 
 # Technology Stack 🏁
- * Angular
- * Springboot
- * MySql
+ * Frontend : Angular
+ * Backend : Springboot
+ * Database : MySql
+ * API : Yahoo Finance API
+ * Testing : Selenium WebDriver & TestNG
 
 ## Terminal Commands
 
