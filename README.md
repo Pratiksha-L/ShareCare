@@ -12,9 +12,9 @@
  **Technical** : Market Capitalization, Simple Moving Average, Volume.
 1. On the basis of selected parameter, users can get recommendation to Buy, Hold or Sell stocks of following sectors: Automobile, Banking, Cement, Energy, Information Technology, FMCG, Pharmaceutical, Metals.
 1. We have also provided functionalities such as -
-    a. Saving a recommended stocks with the specified quantity
-    b. Analysing the top gainer amongst all stocks
-    c. Calculating Price shockers (stocks that have seen a sudden spike in price) & Volume shockers (stocks that have seen a sudden spike in volumes traded).
+    1. Saving a recommended stocks with the specified quantity
+    1. Analysing the top gainer amongst all stocks
+    1. Calculating Price shockers (stocks that have seen a sudden spike in price) & Volume shockers (stocks that have seen a sudden spike in volumes traded).
 1. User profile page maintains user details like, user name, first name , last name and photo of user and also previously saved stocks
 
 ## Technology Stack 🏁
