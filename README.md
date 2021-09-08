@@ -2,7 +2,7 @@
 ![made-for-investors](https://user-images.githubusercontent.com/60769966/131154294-7f2c527d-14e3-4b95-90b7-3f447dc1988b.png)
 ![made-by-developers](https://user-images.githubusercontent.com/60769966/131154458-befd89a1-fb6e-4ad1-bff7-8c44b2e3275e.png)
 
-## Application Preview 👀
+## Website Preview 👀
 ![Untitled design (1)](https://user-images.githubusercontent.com/60769966/131153673-974ae155-f6f8-4a00-b6a4-edceb28495d0.png)
 ![Untitled design](https://user-images.githubusercontent.com/60769966/131153688-1ae966f7-a148-4946-948d-7cc38e4e3000.png)
 
