@@ -1,0 +1,237 @@
+
+<div class="panel-header panel-header-sm increase-height" >
+
+    <h1 class="topleft" >{{pageTitle}}</h1>
+
+    <h5 class = "sector">{{dropdown1Title}}</h5>
+    <p-dropdown  [options]="sectorList" appendTo="body" [(ngModel)]="selectedSector" placeholder="Select a Sector" class="dropdown1"  ></p-dropdown>  
+
+    <h5 class = "parameter">{{dropdown2Title}}</h5>
+    <p-dropdown  [options]="parameters" appendTo="body" [(ngModel)]="selectedParamValue" placeholder="Select a Parameter"  class="dropdown2" ></p-dropdown>
+
+    <p-button  type="button" class="recomendationButton"  label= "Get Recommendation" (onClick)="recommendationButtonClick($event)" [disabled]="buttonClicked"></p-button>
+    
+</div>
+
+
+<p-toast position="top-right"></p-toast>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card" [style]="{'height': '31rem'}">
+                <p-tabView (onChange)="handleChange($event)">
+
+                    <p-tabPanel header="BUY" [selected]="true" [style]="{'color':'rgb(0, 0, 0)'}" >
+                    
+                        <div class="card-body">
+                        <div class="table-responsive">
+                            <table *ngIf = "showBuyTable" class="table">
+                            
+                            <thead class=" text-primary">
+                                <th *ngFor="let col of columnData" pTooltip={{col.description}} tooltipPosition="top" style="text-align: center;">
+                                    {{col.label}}
+                                </th>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let element of stocksToBuy"> 
+                                    <td style="font-weight: 550; color: black;text-align: left;">
+                                        {{element.companyName}}
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        {{element.currentPrice | number : '.2-2'}}
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        {{element[selectedParameter.value] | number : '.2-2' }}
+                                    </td>
+
+                                    <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange | number : '.2-2'}}
+                                    </td> 
+                                    <td *ngIf="element.percentageChange == 0"  style="color:black; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange | number : '.2-2'}}
+                                    </td>
+                                    <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange | number : '.2-2'}}
+                                    </td> 
+
+                                    <td style="text-align: center;">
+                                        {{element.marketCap | number : '.2-2'}}
+                                    </td> 
+
+                                    <td>
+                                        <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="showDialogueBox(element)" style="width: 30px;height: 30px;"></button>
+                                    
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="HOLD" [style]="{'color':'rgb(0, 0, 0)'}" >
+                    
+                        <div class="card-body">
+                            <div class="table-responsive" style="overflow: hidden;">
+    
+                                <table *ngIf = "showHoldTable" class="table">
+                            
+                                <thead class=" text-primary">
+                                    <th style="{'width': '25rem'}" *ngFor="let col of columnData" pTooltip={{col.description}} tooltipPosition="top" style="text-align: center;">
+                                        {{col.label}}
+                                    </th>
+                                </thead>
+    
+                                <tbody>
+                                    <tr *ngFor="let element of stocksToHold"> 
+                                        <td style="font-weight: 550; color: black;text-align: left;">
+                                            {{element.companyName}}
+                                        </td>
+    
+                                        <td style="text-align: center;">
+                                            {{element.currentPrice | number : '.2-2'}}
+                                        </td>
+    
+                                        <td style="text-align: center;">
+                                            {{element[selectedParameter.value] | number : '.2-2' }}
+                                        </td>
+    
+                                        <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange | number : '.2-2'}}
+                                        </td> 
+                                        <td *ngIf="element.percentageChange == 0"  style="color:black; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange | number : '.2-2'}}
+                                    </td> 
+                                        <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange | number : '.2-2'}}
+                                        </td> 
+    
+                                        <td style="text-align: center;">
+                                            {{element.marketCap | number : '.2-2'}}
+                                        </td> 
+    
+                                        <td>
+                                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="showDialogueBox(element)" style="width: 30px;height: 30px;"></button>
+                                        
+                                        
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                    </p-tabPanel>
+
+                        <p-tabPanel header="SELL" [style]="{'color':'rgb(0, 0, 0)'}" >
+                    
+                        <div class="card-body">
+                            <div class="table-responsive" style="overflow: hidden;">
+    
+                                <table *ngIf = "showSellTable" class="table">
+                            
+                                <thead class=" text-primary">
+                                    <th style="{'width': '25rem'}" *ngFor="let col of columnData" pTooltip={{col.description}} tooltipPosition="top" style="text-align: center;">
+                                        {{col.label}}
+                                    </th>
+                                </thead>
+    
+                                <tbody>
+                                    <tr *ngFor="let element of stocksToSell"> 
+                                        <td style="font-weight: 550; color: black;text-align: left;">
+                                            {{element.companyName}}
+                                        </td>
+    
+                                        <td style="text-align: center;">
+                                            {{element.currentPrice | number : '.2-2'}}
+                                        </td>
+    
+                                        <td style="text-align: center;">
+                                            {{element[selectedParameter.value] | number : '.2-2' }}
+                                        </td>
+    
+                                        <td *ngIf="element.percentageChange < 0"  style="color: #CC0000; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange | number : '.2-2'}}
+                                        </td> 
+                                        <td *ngIf="element.percentageChange == 0"  style="color:black; font-weight: 450; text-align: center;">
+                                        {{element.percentageChange | number : '.2-2'}}
+                                    </td>
+                                        <td *ngIf="element.percentageChange > 0" style="color: green; font-weight: 450; text-align: center;">
+                                            {{element.percentageChange | number : '.2-2'}}
+                                        </td> 
+    
+                                        <td style="text-align: center;">
+                                            {{element.marketCap | number : '.2-2'}}
+                                        </td> 
+    
+                                        <td>
+                                        <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="showDialogueBox(element)" style="width: 30px;height: 30px;"></button>
+                                        
+                                        
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                    </p-tabPanel>
+                    
+                </p-tabView>
+                
+                <p-progressSpinner *ngIf="buttonClicked" [style]="{width: '100px', height: '100px', 'text-align': 'center', 'padding-top':'10px', 'padding-left' : '700px'}" styleClass="custom-spinner"strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+
+            </div>
+        </div>
+                
+        <div class="col-md-4">
+                <div class="card card-user" [style]="{'width': '24rem', 'height': '31rem'}">
+                <div class="card-header">
+                    <h5 class="card-category">Statistics</h5>
+                    <h5 class="card-title">Performance</h5>
+                </div>
+                <div class="card-body">
+                <div class="chart-area" [style]="{'height': '21rem'}">
+                    <canvas baseChart id="barChartSimpleGradientsNumbers"
+                                [datasets]="barGraphGradientsNumbersData"
+                                [labels]="barGraphGradientsNumbersLabels"
+                                [colors]="barGraphGradientsNumbersColors"
+                                [options]="barGraphGradientsNumbersOptions"
+                                [chartType]="barGraphGradientsNumbersType"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                </div>
+                </div>  
+
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+
+<p-dialog header="Add to User History : {{selectedStock}}" [(visible)]="displayDialogueBox" [style]="{width: '50vw'}" [baseZIndex]="10000">
+
+    <p>Enter volume of stocks to save<br><br>
+        <p-inputNumber [(ngModel)]="savedQuantity" mode="decimal">
+        </p-inputNumber>
+    </p>
+    
+    <ng-template pTemplate="footer">
+        
+        <button type="button" pButton pRipple (click)="addSavedStocks(element)" label="Save" icon="pi pi-check" [disabled]="savedQuantity==null" class="p-button-info p-mb-2" ></button>
+    
+    </ng-template>
+</p-dialog>
+
+
+   

@@ -1,0 +1,108 @@
+<div class="panel-header panel-header-sm increase-height">
+  <!-- Displaying "User Profile" -->
+  <h1 class="topleft" >{{pageTitle}}</h1>         
+</div>
+
+<div  class="main-content">
+  <div *ngIf="showUserHistory" class="row">
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">
+        </div>
+
+        <div class="card-body">
+          <!-- Display of the table -->
+          <form>
+            <p-table [value]="userHistory" [paginator]="true" [rows]="7">
+              <ng-template pTemplate="header" >
+                <tr class="headings" style="color: #69bafc; font-weight: 700;">
+                    <th style="text-align: left;"> Company Name </th>
+                    <th style="text-align: right;"> Sector </th>
+                    <th style="text-align: right;"> Quantity </th>
+                    <th style="text-align: right;"> Current Price(Rs) </th>
+                    <th style="text-align: right;"> Trade Type </th>
+                </tr>
+              </ng-template>
+
+              <!-- Table contents -->
+              <ng-template pTemplate="body" let-history >
+                <tr class="tableValues">
+                  <td style="text-align: left;font-weight: 500;" >{{history.stockName}}</td>
+                  <td style="text-align: right;" >{{history.sector}}</td>
+                  <td style="text-align: right;" >{{history.quantity | number}}</td>
+                  <td style="text-align: right;" >{{history.currentPrice | number : '.2-2'}}</td>
+
+                  <td *ngIf="checkTradeTypeBUY(history.tradeType)" style="font-weight: 700;              
+                    background: #6bae55;
+                    display: block;
+                    block-size: auto;
+                    position: relative;
+                    top : 10px ;
+                    left: 75px;
+                    bottom:10px;
+                    height:45px;
+                    width: 90px;
+                    color: rgb(255, 255, 255);
+                    text-align: center;" >
+                  {{history.tradeType}}</td>
+
+                  <td *ngIf="checkTradeTypeHOLD(history.tradeType)" style="font-weight: 700;              
+                      background: #007BFF;
+                      display: block;
+                      block-size: auto;
+                      position: relative;
+                      top : 10px ;
+                      left: 75px;
+                      bottom:10px;
+                      height: 45px;
+                      width: 90px;
+                      color: rgb(255, 255, 255);
+                      text-align: center;" >
+                    {{history.tradeType}}</td>
+
+                  <td *ngIf="checkTradeTypeSELL(history.tradeType)" style="font-weight: 700;              
+                      background: #d44f27;
+                      display: block;
+                      block-size: auto;
+                      position: relative;
+                      top : 10px ;
+                      left: 75px;
+                      bottom:30px;
+                      height: 45px;
+                      width: 90px;
+                      color: rgb(255, 255, 255);
+                  text-align: center;" >{{history.tradeType}}</td>
+
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td style="text-align: center; font-size: 25px;font-weight: 500;" colspan="5">No stocks saved yet.</td>
+                </tr>
+            </ng-template>
+    
+            </p-table>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div  class="col-md-3">
+      <div class="card card-user">
+        
+        <!-- Display of the user details -->
+        <div class="card-body">
+          <div class="author">
+            <a >
+              <img class="avatar border-gray" src="{{imgUrl}}" alt="...">
+              <h5 class="title">{{firstName}} {{lastName}} </h5>
+            </a>
+            <p class="description">
+              {{user.userName}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

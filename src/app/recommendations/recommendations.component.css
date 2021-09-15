@@ -1,0 +1,179 @@
+.dropdown1
+{
+    position: absolute;
+    top: 170px;
+    left: 30px;
+}
+
+.dropdown2
+{
+    position: absolute;
+    top: 170px;
+    left: 280px;
+   
+}
+
+.topleft 
+{
+    color:white; 
+    font-weight: 400;
+    text-transform: capitalize;
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    font-size: 36px;
+    font-family: times, Times New Roman, times-roman, georgia, serif;
+    letter-spacing: 1.5px;
+}
+
+.increase-height
+{
+    padding-bottom: 175px; 
+}
+
+.recomendationButton
+{
+    position: absolute;
+    top: 170px;
+    left: 643px;
+}
+
+.header
+{
+    font-weight: 500;
+    
+}
+
+p 
+{
+    margin: 0;
+}
+
+.confirmation-content 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:host ::ng-deep .p-dialog .p-button
+{
+    min-width: 6rem;
+}
+
+.sector
+{
+    position: absolute;
+    top: 146px;
+    left: 30px;
+    color: #69bafc; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
+    line-height: 17px;
+}
+.parameter
+{
+    position: absolute;
+    top: 146px;
+    left: 280px;
+    color:#69bafc; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
+    line-height: 17px;
+}
+.button 
+{
+    min-width: 10rem;
+    margin-right: .5rem;
+}
+
+.p-toast-message-custom 
+{
+    background-color: #E1CFE7;
+    border: solid #8A427A;
+    border-width: 0 0 0 6px;
+    color: #2c1e30;
+    
+}
+.p-toast-icon-close 
+{
+    color: #2c1e30;
+}
+
+.card-category
+{
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 17px;
+    text-transform: uppercase;
+    color:rgb(36, 34, 34); 
+    letter-spacing: 1px;
+    
+}
+
+.card-category:after 
+{
+    content: '';
+    display: block;
+    position: relative;
+    width: 22%;
+    border-bottom: 1px solid #007BFF;
+    margin-top: 5px; 
+}
+
+.card-title
+{
+    font-family: 'times, Times New Roman, times-roman, georgia, serif';
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size:27px;
+    color:rgb(0, 0, 0); 
+}
+
+.card-footer
+{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    line-height: 17px;
+    color:	#666 ;
+}
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle 
+{
+    animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-color 6s ease-in-out infinite;
+}
+
+@keyframes custom-progress-spinner-color 
+{
+    100%,
+    0% {
+        stroke: #16697A;
+    }
+    40% {
+        stroke: #489FB5;
+    }
+    66% {
+        stroke: #82C0CC;
+    }
+    80%,
+    90% {
+        stroke: #FFA62B;
+    }
+}
+
+@keyframes custom-progress-spinner-dash 
+{
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}

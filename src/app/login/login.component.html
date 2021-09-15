@@ -1,0 +1,63 @@
+<p-toast position="bottom-right"></p-toast> 
+
+<body id="page-top">
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100">
+
+        <div class="col-lg-7 my-auto">
+          <div class="header-content mx-auto">
+
+            <h1 class="mb-5">{{pageTitle}}</h1>
+            <h5 class="tagline">{{tagline}}</h5>
+            
+          </div>
+        </div>
+
+        <div class="col-lg-5 my-auto">
+          <p-card header={{header}} [style]="{width: '360px', color: '#000000' }"><br>
+
+            <div class="ui-g">
+
+              <div class="ui-g-3">
+                <label for="float-input">{{label1}}</label>
+              </div>
+
+              <div class="ui-g-3">
+                <input id="float-input" type="text" size="30" pInputText [(ngModel)]="userName"> 
+              </div>
+
+            </div>
+
+            <div class="ui-g">
+
+              <div class="ui-g-3">
+                  <label for="float-password">{{label2}}</label>
+              </div>
+
+              <div class="ui-g-3">
+                <input id="float-password"  pPassword type="password" [(ngModel)]="password" />
+              </div>
+
+            </div>
+
+            <div class="ui-g" *ngIf="hasError">
+                <div class="ui-g-10">
+                    <p style="color: red">{{errorMessage}}</p>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3">
+                  <br>
+                  <p-button type="button" label="Login" (onClick)="validateLogin()"></p-button>
+                </div>
+            </div>
+
+          </p-card>
+        </div>
+
+      </div>
+    </div>
+  </header>
+</body>
